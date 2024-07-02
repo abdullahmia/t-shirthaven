@@ -23,6 +23,9 @@ module.exports = {
         primary: "#202533",
         secondary: "#5c5f6a",
       },
+      backgroundColor: {
+        secondary: "#F6F6F6",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -76,6 +79,10 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      backgroundImage: {
+        "gradient-light":
+          "linear-gradient(90deg, rgba(246,246,246,1) 0%, rgba(255,255,255,1) 100%, rgba(240,240,244,1) 100%)",
       },
     },
   },
