@@ -19,13 +19,13 @@ export default function Header() {
   const menus = [
     { title: "Home", url: "/" },
     { title: "Categories", url: "/categoreis" },
-    { title: "Products", url: "/products" },
+    { title: "Shop", url: "/products" },
     { title: "About", url: "/about" },
     { title: "Contact", url: "/contact" },
   ];
 
   const isActive = (url) => {
-    return pathname === url ? "text-primary" : "text-secondary";
+    return pathname === url ? "text-primary font-semibold" : "text-secondary";
   };
 
   return (

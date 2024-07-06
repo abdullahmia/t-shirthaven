@@ -3,12 +3,10 @@ import Header from "@/components/header";
 
 export default function WebsiteLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <Header />
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <div className="h-screen w-full flex flex-col justify-between">
+      <Header />
+      <main className="flex-1">{children}</main>
+      <Footer />
+    </div>
   );
 }

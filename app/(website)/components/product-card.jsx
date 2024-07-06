@@ -9,7 +9,7 @@ export default function ProductCard() {
         width={400}
         height={312}
         alt="prouct"
-        className="w-full h-[312px] object-cover"
+        className="w-full h-[312px] object-cover aspect-auto"
       />
 
       <div className="mt-5 space-y-2">
