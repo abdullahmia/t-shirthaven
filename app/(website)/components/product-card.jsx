@@ -13,7 +13,10 @@ export default function ProductCard() {
       />
 
       <div className="mt-5 space-y-2">
-        <h2 className="text-primary text-md">Classic Monochrome Tees</h2>
+        <div>
+          <p className="text-secondary text-xs">Dior</p>
+          <h2 className="text-primary text-md">Classic Monochrome Tees</h2>
+        </div>
         <div className="text-sm flex items-center justify-between">
           <Button
             className="rounded-full text-xs text-secondary"

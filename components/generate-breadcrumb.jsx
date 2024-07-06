@@ -8,9 +8,10 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { SITE_NAME } from "@/constants";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export function GenerateBreadcrumb({ variant = "primary" }) {
+export function GenerateBreadcrumb({ variant = "primary", title }) {
   // hooks
   const pathname = usePathname(); // Example: /docs/components/breadcrumb
 
@@ -21,9 +22,12 @@ export function GenerateBreadcrumb({ variant = "primary" }) {
     <Breadcrumb
       className={`${variant === "primary" ? "bg-secondary py-8 " : ""}`}
     >
+      <div className="container responsive pb-2">
+        <h2 className="text-2xl font-semibold text-primary">{title}</h2>
+      </div>
       <BreadcrumbList className="container responsive">
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">{SITE_NAME}</BreadcrumbLink>
+          <Link href="/">{SITE_NAME}</Link>
         </BreadcrumbItem>
         <BreadcrumbSeparator className="" />
 
@@ -31,12 +35,11 @@ export function GenerateBreadcrumb({ variant = "primary" }) {
           const href = `/${items.slice(0, index + 1).join("/")}`;
           return (
             <>
-              <BreadcrumbItem key={item}>
+              <BreadcrumbItem key={index}>
                 <BreadcrumbLink href={href} className="capitalize">
                   {item}
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              {/* If last item then no need to add the separator */}
               {index < items.length - 1 && <BreadcrumbSeparator />}
             </>
           );
