@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleUser, ShoppingCart } from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./logo";
@@ -15,6 +15,8 @@ import { Input } from "./ui/input";
 export default function Header() {
   // hooks
   const pathname = usePathname();
+
+  const isAuthenticated = false;
 
   const menus = [
     { title: "Home", url: "/" },
@@ -73,27 +75,33 @@ export default function Header() {
                 <ShoppingCart size={20} />
               </Link>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="cursor-pointer">
-                    <CircleUser size={20} />
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 mt-4">
-                  <DropdownMenuItem className="cursor-pointer" asChild>
-                    <Link href="/account">Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer" asChild>
-                    <Link href="/account/enrolled-courses">My Courses</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer" asChild>
-                    <Link href="">Testimonials & Certificates</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer w-full" asChild>
-                    <button onClick={() => signOut()}>Logout</button>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {isAuthenticated ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div className="cursor-pointer">
+                      <User size={20} />
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56 mt-4">
+                    <DropdownMenuItem className="cursor-pointer" asChild>
+                      <Link href="/account">Profile</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer" asChild>
+                      <Link href="/account/enrolled-courses">My Courses</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer" asChild>
+                      <Link href="">Testimonials & Certificates</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer w-full" asChild>
+                      <button onClick={() => signOut()}>Logout</button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link href="/auth/login">
+                  <User size={20} />
+                </Link>
+              )}
             </div>
           </div>
         </div>

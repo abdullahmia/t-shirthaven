@@ -98,7 +98,7 @@ export default function Page() {
 
       <div className="container responsive py-20">
         <div className="text-center">
-          <p className="text-sm text-secondary">Shop Now</p>
+          <p className="text-[12px] text-secondary">Shop Now</p>
           <h2 className="text-primary text-2xl font-semibold">Best Selling</h2>
         </div>
 
