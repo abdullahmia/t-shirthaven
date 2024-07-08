@@ -20,7 +20,15 @@ export function GenerateBreadcrumb({ variant = "primary", title }) {
 
   return (
     <Breadcrumb
-      className={`${variant === "primary" ? "bg-secondary py-8 " : ""}`}
+      className={`${
+        variant === "primary"
+          ? "bg-secondary py-10"
+          : variant === "success"
+          ? "bg-[#D5E5D7] py-10"
+          : variant === "danger"
+          ? "bg-[#FBD9D0] py-10"
+          : ""
+      }`}
     >
       <div className="container responsive pb-2">
         <h2 className="text-2xl font-semibold text-primary">{title}</h2>

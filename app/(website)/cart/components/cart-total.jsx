@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export default function CartTotal() {
@@ -29,7 +30,10 @@ export default function CartTotal() {
       </div>
 
       <div className="flex flex-col justify-center items-center gap-6 mt-6">
-        <Button className="w-full">Checkout</Button>
+        {/* <Button className="w-full">Checkout</Button> */}
+        <Link href="/checkout" className={`${cn(buttonVariants({}))} w-full`}>
+          Checkout
+        </Link>
 
         <Link
           href="/shop"
