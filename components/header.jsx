@@ -16,7 +16,7 @@ export default function Header() {
   // hooks
   const pathname = usePathname();
 
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   const menus = [
     { title: "Home", url: "/" },
@@ -84,7 +84,7 @@ export default function Header() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56 mt-4">
                     <DropdownMenuItem className="cursor-pointer" asChild>
-                      <Link href="/account">Profile</Link>
+                      <Link href="/account">My Account</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="cursor-pointer" asChild>
                       <Link href="/account/enrolled-courses">My Courses</Link>
