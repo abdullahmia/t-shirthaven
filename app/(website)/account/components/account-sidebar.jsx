@@ -37,7 +37,7 @@ export default function AccountSidebar() {
    * HANDLERS
    */
   const handleLogout = () => {
-    router.push("/auth/login");
+    router.push("/login");
   };
 
   return (

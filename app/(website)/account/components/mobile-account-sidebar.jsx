@@ -39,7 +39,7 @@ export default function MobileAccountSidebar() {
    * HANDLERS
    */
   const handleLogout = () => {
-    router.push("/auth/login");
+    router.push("/login");
   };
 
   return (

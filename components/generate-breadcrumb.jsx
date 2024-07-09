@@ -13,7 +13,7 @@ import { usePathname } from "next/navigation";
 
 export function GenerateBreadcrumb({ variant = "primary", title }) {
   // hooks
-  const pathname = usePathname(); // Example: /docs/components/breadcrumb
+  const pathname = usePathname();
 
   // Generate a array of breadcrumb items from the pathname
   const items = pathname.split("/").filter(Boolean);

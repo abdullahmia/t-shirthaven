@@ -92,7 +92,7 @@ export default function Header() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Link href="/auth/login">
+                <Link href="/login">
                   <User size={20} />
                 </Link>
               )}
