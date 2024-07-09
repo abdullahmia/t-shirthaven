@@ -16,7 +16,7 @@ export default function Header() {
   // hooks
   const pathname = usePathname();
 
-  const isAuthenticated = true;
+  const isAuthenticated = false;
 
   const menus = [
     { title: "Home", url: "/" },
@@ -85,12 +85,6 @@ export default function Header() {
                   <DropdownMenuContent align="end" className="w-56 mt-4">
                     <DropdownMenuItem className="cursor-pointer" asChild>
                       <Link href="/account">My Account</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer" asChild>
-                      <Link href="/account/enrolled-courses">My Courses</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer" asChild>
-                      <Link href="">Testimonials & Certificates</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="cursor-pointer w-full" asChild>
                       <button onClick={() => signOut()}>Logout</button>
