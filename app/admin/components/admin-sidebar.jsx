@@ -33,7 +33,7 @@ export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-[260px] bg-white border-r border-[#E9E9EB] p-5">
+    <div className="w-[260px] bg-white border-r border-[#E9E9EB] p-5 sticky top-0 h-screen overflow-y-auto">
       <div>
         <Image
           src="/admin-logo.png"
@@ -51,7 +51,9 @@ export default function AdminSidebar() {
             <Link
               href={menu.url}
               className={`flex items-center gap-3 text-sm text-[#5C5F6A] font-medium hover:text-primary py-3 px-6 rounded ${
-                pathname === menu.url ? "bg-[#F7F8FA]" : "hover:bg-[#F7F8FA]"
+                pathname === menu.url
+                  ? "bg-[#F7F8FA] text-primary"
+                  : "hover:bg-[#F7F8FA]"
               }`}
             >
               <Image src={menu.icon} width={20} height={20} alt="icon" />
