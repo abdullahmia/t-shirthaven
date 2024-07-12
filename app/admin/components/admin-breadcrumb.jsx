@@ -2,12 +2,12 @@
 
 import {
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function AdminBreadcrumb() {
@@ -26,9 +26,9 @@ export default function AdminBreadcrumb() {
             return (
               <>
                 <BreadcrumbItem key={index}>
-                  <BreadcrumbLink href={href} className="capitalize">
+                  <Link href={href} className="capitalize">
                     {item}
-                  </BreadcrumbLink>
+                  </Link>
                 </BreadcrumbItem>
                 {index < items.length - 1 && <BreadcrumbSeparator />}
               </>

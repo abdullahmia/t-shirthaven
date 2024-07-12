@@ -1,3 +1,5 @@
+import ProductTable from "./components/product-table";
+
 export const metadata = {
   title: "Products inventory",
   description:
@@ -7,7 +9,7 @@ export const metadata = {
 export default function AdminProducts() {
   return (
     <div>
-      <h1>Products page</h1>
+      <ProductTable />
     </div>
   );
 }

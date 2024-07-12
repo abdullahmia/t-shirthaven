@@ -1,3 +1,5 @@
+import { BestSelling } from "./components/wizards/best-selling";
+import RecentOrders from "./components/wizards/recent-orders";
 import { TotalCustomers } from "./components/wizards/total-customers";
 import { TotalOrders } from "./components/wizards/total-orders";
 import { TotalSells } from "./components/wizards/total-sells";
@@ -14,6 +16,11 @@ export default function Admin() {
         <TotalSells />
         <TotalCustomers />
         <TotalOrders />
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-10">
+        <BestSelling />
+        <RecentOrders />
       </div>
     </div>
   );
