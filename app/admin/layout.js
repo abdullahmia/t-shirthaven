@@ -3,11 +3,13 @@ import AdminSidebar from "./components/admin-sidebar";
 
 export default function AdminLayout({ children }) {
   return (
-    <div className="grid min-h-screen w-full grid-cols-[240px_1fr]">
+    <div className="flex">
       <AdminSidebar />
-      <main className="container responsive">
-        <AdminBreadcrumb />
-        <div className="py-12">{children}</div>
+      <main className="flex-1">
+        <div className="container responsive">
+          <AdminBreadcrumb />
+          <div className="py-12">{children}</div>
+        </div>
       </main>
     </div>
   );
