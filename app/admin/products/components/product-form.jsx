@@ -8,11 +8,13 @@ import { SIZE_OPTIONS } from "@/constants";
 import { X } from "lucide-react";
 import Image from "next/image";
 
-export default function ProductForm() {
+export default function ProductForm({ isEdit = false }) {
   return (
     <div className="bg-white rounded-lg border border-[#E9E9EB]">
       <div className="p-7 border-b border-[#E9E9EB]">
-        <h2 className="text-[18px] text-primary font-normal">Add Product</h2>
+        <h2 className="text-[18px] text-primary font-normal">
+          {isEdit ? "Edit" : "Add"} Product
+        </h2>
       </div>
 
       <form className="p-7 space-y-5">
@@ -71,12 +73,12 @@ export default function ProductForm() {
             {/* Product Image */}
             <div>
               <Label className="text-sm text-secondary font-medium block mb-1">
-                Price
+                Image
               </Label>
               <div class="relative">
                 <label
                   title="Click to upload"
-                  class="cursor-pointer flex items-center justify-center gap-4 px-6 py-4 before:border-gray-400/60 hover:before:border-gray-300 group before:bg-secondary before:absolute before:inset-0 before:rounded-3xl before:border before:border-dashed before:transition-transform before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95"
+                  class="cursor-pointer flex items-center justify-center gap-4 px-6 py-4 before:border-gray-400/60 hover:before:border-gray-300 group before:bg-white before:absolute before:inset-0 before:rounded-3xl before:border before:border-dashed before:transition-transform before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95"
                 >
                   <div class="w-max relative">
                     <Image

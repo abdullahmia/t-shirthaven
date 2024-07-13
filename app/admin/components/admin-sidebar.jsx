@@ -12,6 +12,11 @@ const menus = [
     icon: "/assets/icons/products.png",
   },
   {
+    title: "Categories",
+    url: "/admin/categories",
+    icon: "/assets/icons/package.png",
+  },
+  {
     title: "Orders",
     url: "/admin/orders",
     icon: "/assets/icons/orders.png",
