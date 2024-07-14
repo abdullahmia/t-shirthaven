@@ -1,3 +1,5 @@
+import OrderTable from "./components/order-table";
+
 export const metadata = {
   title: "Order Management",
   description:
@@ -7,7 +9,7 @@ export const metadata = {
 export default function OrderManagement() {
   return (
     <div>
-      <h1>Order Mangement</h1>
+      <OrderTable />
     </div>
   );
 }

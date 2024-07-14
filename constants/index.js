@@ -52,3 +52,11 @@ export const SIZE_OPTIONS = [
   { label: "XXL", value: "xxl" },
   { label: "XXXL", value: "xxxl" },
 ];
+
+export const ORDER_STATUS_OPTIONS = [
+  { label: "Pending", value: "pending" },
+  { label: "Processing", value: "processing" },
+  { label: "Completed", value: "completed" },
+  { label: "Cancelled", value: "cancelled" },
+  { label: "Refunded", value: "refunded" },
+];
