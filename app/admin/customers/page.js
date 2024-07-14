@@ -1,3 +1,5 @@
+import CustomerTable from "./components/customer-table";
+
 export const metadata = {
   title: "Customer Management",
   description: "Manage customers. View, update, delete customers.",
@@ -6,7 +8,7 @@ export const metadata = {
 export default function CustomerManagement() {
   return (
     <div>
-      <h1>Customer Mangement</h1>
+      <CustomerTable />
     </div>
   );
 }
