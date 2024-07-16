@@ -64,7 +64,6 @@ const Button = React.forwardRef(
         )}
         ref={ref}
         {...props}
-        disabled={loading}
       >
         {content}
       </Comp>

@@ -35,6 +35,9 @@ export default function SignupForm() {
     },
   });
 
+  /**
+   * HANDLERS
+   */
   const handleOnSubmit = async (data) => {
     setLoading(true);
     setError(null);

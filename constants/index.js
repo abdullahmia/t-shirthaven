@@ -1,5 +1,13 @@
 export const SITE_NAME = process.env.SITE_NAME || "Fashio Store";
 
+export const SMTP_HOST = process.env.SMTP_HOST;
+export const SMTP_PORT = process.env.SMTP_PORT;
+export const SMTP_USER = process.env.SMTP_USER;
+export const SMTP_PASSWORD = process.env.SMTP_PASSWORD;
+export const MAIL_FROM = process.env.MAIL_FROM;
+
+export const WEBAPP_URL = process.env.WEBAPP_URL;
+
 export const CATEGORY_OPTIONS = [
   {
     id: 1,

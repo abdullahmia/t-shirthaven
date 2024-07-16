@@ -1,8 +1,16 @@
 import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import AccountSidebar from "./components/account-sidebar";
 import MobileAccountSidebar from "./components/mobile-account-sidebar";
 
-export default function AccountLayout({ tabs }) {
+export default async function AccountLayout({ tabs }) {
+  const session = await auth();
+
+  if (session === null) {
+    return redirect("/login");
+  }
+
   return (
     <div>
       <GenerateBreadcrumb title="My Account" />

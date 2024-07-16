@@ -1,15 +1,11 @@
 "use client";
 
-import { ShoppingCart, User } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
+import { SessionProvider } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import HeaderOptions from "./header-option";
 import Logo from "./logo";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
 
 export default function Header() {
@@ -75,27 +71,9 @@ export default function Header() {
                 <ShoppingCart size={20} />
               </Link>
 
-              {isAuthenticated ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <div className="cursor-pointer">
-                      <User size={20} />
-                    </div>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 mt-4">
-                    <DropdownMenuItem className="cursor-pointer" asChild>
-                      <Link href="/account">My Account</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer w-full" asChild>
-                      <button onClick={() => signOut()}>Logout</button>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Link href="/login">
-                  <User size={20} />
-                </Link>
-              )}
+              <SessionProvider>
+                <HeaderOptions />
+              </SessionProvider>
             </div>
           </div>
         </div>

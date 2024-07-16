@@ -40,4 +40,4 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-export const User = models.User ?? model("User", userSchema);
+export const User = models?.User ?? model("User", userSchema);
