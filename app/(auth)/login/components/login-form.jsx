@@ -3,12 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { credentialLoginAction } from "../../action";
 
@@ -26,7 +26,6 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
 
   // hooks
-  const { toast } = useToast();
   const router = useRouter();
 
   // form
@@ -51,10 +50,7 @@ export default function LoginForm() {
     try {
       const response = await credentialLoginAction(data);
       router.push("/account");
-      toast({
-        description: "Login successful",
-        variant: "success",
-      });
+      toast.success("Login successful");
       setError(null);
       setLoading(false);
     } catch (error) {

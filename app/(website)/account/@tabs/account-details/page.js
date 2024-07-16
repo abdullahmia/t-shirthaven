@@ -11,7 +11,6 @@ export const metadata = {
 export default async function AccountDetails() {
   const { user: loggedInUser } = await auth();
   const user = await getUserByEmail(loggedInUser?.email);
-  console.log(user);
 
   return (
     <div>

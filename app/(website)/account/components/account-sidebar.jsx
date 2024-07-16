@@ -1,5 +1,6 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -33,13 +34,6 @@ export default function AccountSidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  /**
-   * HANDLERS
-   */
-  const handleLogout = () => {
-    router.push("/login");
-  };
-
   return (
     <div className="pr-10 border-r">
       <ul className="list-none space-y-3">
@@ -58,7 +52,7 @@ export default function AccountSidebar() {
         ))}
         <li
           className={`w-full text-sm text-secondary font-medium flex items-start gap-3 hover:text-primary px-6 py-3 rounded hover:bg-secondary cursor-pointer`}
-          onClick={handleLogout}
+          onClick={() => signOut()}
         >
           <Image
             src={"/assets/icons/logout.png"}

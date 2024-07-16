@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
+import { updateUserAction } from "../../../action";
 
 const ZUpateName = z.object({
   name: z
@@ -14,6 +17,9 @@ const ZUpateName = z.object({
 });
 
 export default function AccountDetailsForm({ initialData }) {
+  // Local State
+  const [loading, setLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -29,7 +35,15 @@ export default function AccountDetailsForm({ initialData }) {
    * HANDLERS
    */
   const handleOnSubmit = async (data) => {
-    console.log(data);
+    setLoading(true);
+    try {
+      await updateUserAction(initialData.id, data);
+      setLoading(false);
+      toast.success("Account updated successfully");
+    } catch (error) {
+      setLoading(false);
+      toast.error("Failed to update account");
+    }
   };
 
   return (
@@ -58,7 +72,11 @@ export default function AccountDetailsForm({ initialData }) {
       </div>
 
       <div className="pt-8">
-        <Button type="submit" disabled={!isValid || isSubmitting}>
+        <Button
+          type="submit"
+          disabled={!isValid || isSubmitting}
+          loading={loading}
+        >
           Save Changes
         </Button>
       </div>

@@ -3,13 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
 import { ZCreateUser } from "@/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { registerAction } from "../../action";
 
 export default function SignupForm() {
@@ -18,7 +18,6 @@ export default function SignupForm() {
   const [loading, setLoading] = useState(false);
 
   // hooks
-  const { toast } = useToast();
   const router = useRouter();
 
   // form
@@ -45,10 +44,7 @@ export default function SignupForm() {
       await registerAction(data);
       setLoading(false);
       setError(null);
-      toast({
-        description: "Account created successfully",
-        variant: "success",
-      });
+      toast.success("Account created successfully");
       router.push("/login");
     } catch (error) {
       setError(error?.message);

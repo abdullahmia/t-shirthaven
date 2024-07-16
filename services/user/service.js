@@ -78,6 +78,9 @@ export const updateUser = async (id, data) => {
     const user = await User.findOneAndUpdate({ _id: id }, data, {
       new: true,
     }).lean();
+
+    userCache.revalidate({ email: user.email, id: user._id });
+
     return transformObject(user);
   } catch (error) {
     throw new Error("Failed to update user");

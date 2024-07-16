@@ -1,4 +1,5 @@
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "sonner";
+
 import { connectDB } from "@/lib/db";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -17,7 +18,7 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <Toaster />
+        <Toaster position="top-right" />
       </body>
     </html>
   );
