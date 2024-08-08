@@ -1,3 +1,4 @@
+import { getCategories } from "@/services/category/service";
 import CategoryTable from "./components/category-table";
 
 export const metadata = {
@@ -5,10 +6,12 @@ export const metadata = {
   description: "Manage your categories",
 };
 
-export default function Categories() {
+export default async function Categories() {
+  const categories = await getCategories();
+
   return (
     <div>
-      <CategoryTable />
+      <CategoryTable categories={categories} />
     </div>
   );
 }

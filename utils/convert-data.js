@@ -31,15 +31,37 @@
  * // }
  */
 
+// export function transformObject(obj) {
+//   if (Array.isArray(obj)) {
+//     return obj.map((item) => transformObject(item));
+//   } else if (obj !== null && typeof obj === "object") {
+//     const transformedObj = {};
+//     for (const key in obj) {
+//       if (obj.hasOwnProperty(key)) {
+//         if (key === "_id") {
+//           // transformedObj["id"] = transformObject(obj[key]);
+//           transformedObj["id"] = obj[key].toString();
+//         } else if (key !== "__v" && key !== "password") {
+//           transformedObj[key] = transformObject(obj[key]);
+//         }
+//       }
+//     }
+//     return transformedObj;
+//   } else {
+//     return obj;
+//   }
+// }
 export function transformObject(obj) {
   if (Array.isArray(obj)) {
     return obj.map((item) => transformObject(item));
+  } else if (obj instanceof Date) {
+    // Convert Date object to string
+    return obj.toISOString();
   } else if (obj !== null && typeof obj === "object") {
     const transformedObj = {};
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         if (key === "_id") {
-          // transformedObj["id"] = transformObject(obj[key]);
           transformedObj["id"] = obj[key].toString();
         } else if (key !== "__v" && key !== "password") {
           transformedObj[key] = transformObject(obj[key]);

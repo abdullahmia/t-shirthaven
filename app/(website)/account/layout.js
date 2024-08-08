@@ -1,5 +1,6 @@
 import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
 import { auth } from "@/lib/auth";
+import { getUserByEmail } from "@/services/user";
 import { redirect } from "next/navigation";
 import AccountSidebar from "./components/account-sidebar";
 import MobileAccountSidebar from "./components/mobile-account-sidebar";
@@ -9,6 +10,11 @@ export default async function AccountLayout({ tabs }) {
 
   if (session === null) {
     return redirect("/login");
+  }
+
+  const user = await getUserByEmail(session.user.email);
+  if (user?.role !== "user") {
+    return redirect("/admin");
   }
 
   return (

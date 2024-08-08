@@ -9,38 +9,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { formatDate } from "@/utils/date";
 import { Ellipsis, FilePenLine, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const data = [
-  {
-    image: "/assets/images/product.png",
-    name: "Raw Black T-Shirt Lineup",
-    totalProduct: 10,
-    description: "This is a description",
-    date: "2021-09-01",
-  },
-  {
-    image: "/assets/images/product.png",
-    name: "Raw Black T-Shirt Lineup",
-    totalProduct: 10,
-    description: "This is a description",
-    date: "2021-09-01",
-  },
-];
-
-export default function CategoryTable() {
+export default function CategoryTable({ categories }) {
   const columns = [
     {
       accessorKey: "name",
       header: () => {
-        return <div className="text-center lg:w-[250px]">Name</div>;
+        return <div className="text-start lg:w-[70px]">Name</div>;
       },
       cell: ({ row }) => {
         const image = row?.original?.image;
         return (
-          <div className="capitalize flex items-center gap-2">
+          <div className="capitalize flex items-start gap-2">
             <Image
               src={image}
               width={48}
@@ -55,12 +39,12 @@ export default function CategoryTable() {
     {
       accessorKey: "description",
       header: () => {
-        return <div className="text-center">Description</div>;
+        return <div className="text-start">Description</div>;
       },
       cell: ({ row }) => {
         return (
-          <div className="text-center capitalize">
-            {row?.getValue("description")}
+          <div className="text-start capitalize">
+            {row?.getValue("description")?.slice(0, 50)}...
           </div>
         );
       },
@@ -73,19 +57,22 @@ export default function CategoryTable() {
       cell: ({ row }) => {
         return (
           <div className="text-center capitalize">
-            {row?.getValue("totalProduct")}
+            {/* {row?.getValue("totalProduct")} */} 10
           </div>
         );
       },
     },
     {
-      accessorKey: "date",
+      accessorKey: "createdAt",
       header: () => {
         return <div className="text-center">Date</div>;
       },
       cell: ({ row }) => {
+        console.log(row?.original);
         return (
-          <div className="text-center capitalize">{row?.getValue("date")}</div>
+          <div className="text-center capitalize">
+            {formatDate(row?.getValue("createdAt"))}
+          </div>
         );
       },
     },
@@ -126,7 +113,7 @@ export default function CategoryTable() {
     <div>
       <DataTable
         tableTitle="Categories"
-        data={data}
+        data={categories}
         columns={columns}
         extraFilterActions={
           <Link

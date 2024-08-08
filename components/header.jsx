@@ -16,7 +16,6 @@ export default function Header() {
 
   const menus = [
     { title: "Home", url: "/" },
-    { title: "Categories", url: "/categoreis" },
     { title: "Shop", url: "/products" },
     { title: "About", url: "/about" },
     { title: "Contact", url: "/contact" },

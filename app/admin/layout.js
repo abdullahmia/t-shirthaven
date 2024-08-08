@@ -1,7 +1,17 @@
+import { auth } from "@/lib/auth";
+import { getUserByEmail } from "@/services/user";
+import { redirect } from "next/navigation";
 import AdminBreadcrumb from "./components/admin-breadcrumb";
 import AdminSidebar from "./components/admin-sidebar";
 
-export default function AdminLayout({ children }) {
+export default async function AdminLayout({ children }) {
+  const session = await auth();
+  const user = await getUserByEmail(session?.user?.email);
+
+  if (user?.role !== "admin") {
+    return redirect("/account");
+  }
+
   return (
     <div className="flex bg-secondary">
       <AdminSidebar />

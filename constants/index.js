@@ -8,6 +8,10 @@ export const MAIL_FROM = process.env.MAIL_FROM;
 
 export const WEBAPP_URL = process.env.WEBAPP_URL;
 
+export const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME;
+export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
+
 export const CATEGORY_OPTIONS = [
   {
     id: 1,
