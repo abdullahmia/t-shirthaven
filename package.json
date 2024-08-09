@@ -27,6 +27,7 @@
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "2.0.0",
+    "cloudinary-build-url": "^0.2.4",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.1.6",
     "jsonwebtoken": "^9.0.2",

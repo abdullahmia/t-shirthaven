@@ -192,7 +192,7 @@ export default function CategoryForm({ isEdit = false }) {
           )}
         </div>
 
-        <Button>Save category</Button>
+        <Button loading={loading}>Save category</Button>
       </form>
     </div>
   );

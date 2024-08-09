@@ -10,9 +10,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/utils/date";
-import { Ellipsis, FilePenLine, Trash } from "lucide-react";
+import { Ellipsis, FilePenLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import DeleteCategoryModal from "./delete-category-model";
 
 export default function CategoryTable({ categories }) {
   const columns = [
@@ -68,7 +69,6 @@ export default function CategoryTable({ categories }) {
         return <div className="text-center">Date</div>;
       },
       cell: ({ row }) => {
-        console.log(row?.original);
         return (
           <div className="text-center capitalize">
             {formatDate(row?.getValue("createdAt"))}
@@ -98,17 +98,14 @@ export default function CategoryTable({ categories }) {
                 Edit
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer w-full" asChild>
-              <button className="flex items-center gap-2">
-                <Trash size={17} />
-                Detete
-              </button>
-            </DropdownMenuItem>
+
+            <DeleteCategoryModal id={row?.original?.id} />
           </DropdownMenuContent>
         </DropdownMenu>
       ),
     },
   ];
+
   return (
     <div>
       <DataTable
