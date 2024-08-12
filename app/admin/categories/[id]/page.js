@@ -1,3 +1,4 @@
+import { getCategoryById } from "@/services/category/service";
 import CategoryForm from "../components/category-form";
 
 export const metadata = {
@@ -5,10 +6,11 @@ export const metadata = {
   description: "This is the form to edit a category",
 };
 
-export default function EditProduct() {
+export default async function EditProduct({ params: { id } }) {
+  const category = await getCategoryById(id);
   return (
     <div>
-      <CategoryForm isEdit={true} />
+      <CategoryForm isEdit={true} category={category} />
     </div>
   );
 }

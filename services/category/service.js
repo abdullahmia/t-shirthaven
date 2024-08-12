@@ -1,36 +1,69 @@
 import { deleteImageFromCloudinary } from "@/lib/cloudinary";
-import { ZCreateCategory } from "@/types/category";
+import { ZCategoryInput } from "@/types/category";
 import { ZId } from "@/types/common";
 import { cache } from "@/utils/cache";
 import { transformObject } from "@/utils/convert-data";
 import { validateInputs } from "@/utils/validate";
 import { extractPublicId } from "cloudinary-build-url";
-import { revalidatePath } from "next/cache";
 import { cache as reactCache } from "react";
 import "server-only";
 import { categoryCache } from "./cache";
 import { Category } from "./category.model";
 
-export const getCategories = reactCache(
-  () =>
-    cache(async () => {
+export const getCategories = reactCache(() =>
+  cache(
+    async () => {
       return transformObject(
         await Category.find({}).sort({ createdAt: -1 }).lean()
       );
-    })(),
-  [`get-categories`],
-  {
-    tags: [categoryCache.tags.byCount()],
-  }
+    },
+    [categoryCache.tags.byCount()],
+    {
+      tags: [categoryCache.tags.byCount()],
+    }
+  )()
+);
+
+export const getCategoryById = reactCache((id) =>
+  cache(
+    async () => {
+      validateInputs([id, ZId]);
+
+      try {
+        const category = await Category.findOne({ _id: id }).lean();
+        return transformObject(category);
+      } catch (error) {
+        throw new Error("Failed to get category");
+      }
+    },
+    [categoryCache.tags.byId(id)],
+    {
+      tags: [categoryCache.tags.byId(id)],
+    }
+  )()
 );
 
 export const addCategory = async (data) => {
-  validateInputs([data, ZCreateCategory]);
+  validateInputs([data, ZCategoryInput]);
 
   try {
     const category = await Category.create(data);
-    revalidatePath("/admin/categories");
-    // categoryCache.revalidate({ count: true });
+    categoryCache.revalidate({ count: true });
+    return transformObject(category);
+  } catch (error) {
+    throw new Error(error?.message);
+  }
+};
+
+export const updateCategory = async (id, data) => {
+  validateInputs([id, ZId], [data, ZCategoryInput.partial()]);
+
+  try {
+    const category = await Category.findOneAndUpdate({ _id: id }, data, {
+      new: true,
+    });
+
+    categoryCache.revalidate({ id: id, count: true });
     return transformObject(category);
   } catch (error) {
     throw new Error(error?.message);
@@ -47,8 +80,7 @@ export const deleteCategory = async (id) => {
     //  Delete the image from cloudinary
     await deleteImageFromCloudinary(publicId);
 
-    // categoryCache.revalidate({ id: id, count: true });
-    revalidatePath("/admin/categories");
+    categoryCache.revalidate({ id: id, count: true });
   } catch (error) {
     throw new Error(error?.message);
   }

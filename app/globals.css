@@ -8,7 +8,7 @@
 }
 
 .responsive {
-  @apply lg:px-0 px-4;
+  @apply xl:px-0 lg:px-4 md:px-4 px-4;
 }
 
 @layer base {

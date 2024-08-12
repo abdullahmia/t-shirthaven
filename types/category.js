@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ZCreateCategory = z.object({
+export const ZCategoryInput = z.object({
   name: z
     .string({ message: "Name is required" })
     .min(3, { message: "Name should be at least 3 characters long" }),

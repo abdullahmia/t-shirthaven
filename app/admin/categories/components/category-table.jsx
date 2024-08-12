@@ -25,14 +25,14 @@ export default function CategoryTable({ categories }) {
       cell: ({ row }) => {
         const image = row?.original?.image;
         return (
-          <div className="capitalize flex items-start gap-2">
+          <div className="capitalize flex items-center justify-center gap-2">
             <Image
               src={image}
               width={48}
               height={48}
               alt={row.getValue("name")}
             />
-            <span>{row.getValue("name")}</span>
+            <span className="font-semibold">{row.getValue("name")}</span>
           </div>
         );
       },
@@ -91,7 +91,7 @@ export default function CategoryTable({ categories }) {
           <DropdownMenuContent align="end" className="w-32 mt-4">
             <DropdownMenuItem className="cursor-pointer w-full" asChild>
               <Link
-                href={`/admin/categories/${1}`}
+                href={`/admin/categories/${row?.original?.id}`}
                 className="flex items-center gap-2"
               >
                 <FilePenLine size={17} />
