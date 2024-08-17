@@ -2,24 +2,24 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ProductCard() {
+export default function ProductCard({ product }) {
   return (
     <div className="group">
-      <Link href="/products/asdfsa">
+      <Link href={`/products/${product?.slug}`}>
         <Image
-          src={"/assets/images/product.png"}
+          src={product?.images[0]?.url}
           width={400}
           height={312}
-          alt="prouct"
+          alt={product?.title}
           className="w-full h-[312px] object-cover aspect-auto"
         />
       </Link>
 
       <div className="mt-5 space-y-2">
-        <Link href="/products/asdfsa">
-          <p className="text-secondary text-xs">Dior</p>
+        <Link href={`/products/${product?.slug}`}>
+          <p className="text-secondary text-xs">{product?.category?.name}</p>
           <h2 className="text-primary text-md group-hover:underline">
-            Classic Monochrome Tees
+            {product?.title}
           </h2>
         </Link>
 
@@ -31,7 +31,7 @@ export default function ProductCard() {
           >
             Add to cart
           </Button>
-          <p className="text-secondary">$ 30</p>
+          <p className="text-secondary">$ {product?.price}</p>
         </div>
       </div>
     </div>

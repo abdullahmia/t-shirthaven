@@ -1,4 +1,5 @@
 import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
+import { getProducts } from "@/services/product/service";
 import ProductCard from "../components/product-card";
 import ProductFilters from "./components/product-filters";
 import ProductPagination from "./components/product-pagination";
@@ -9,7 +10,8 @@ export const metadata = {
   description: "Products page",
 };
 
-export default function ProductPage() {
+export default async function ProductPage() {
+  const products = await getProducts();
   return (
     <div className="">
       {/* Breadcrumb */}
@@ -21,15 +23,12 @@ export default function ProductPage() {
           <ProductFilters />
         </div>
         <div className="lg:col-span-9 col-span-12">
-          <ProductSort />
+          <ProductSort products={products} />
 
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {products?.map((product) => (
+              <ProductCard key={product?.id} product={product} />
+            ))}
           </div>
 
           {/* Pagination */}

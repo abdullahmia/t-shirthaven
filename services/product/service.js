@@ -4,6 +4,7 @@ import { transformObject } from "@/utils/convert-data";
 import { validateInputs } from "@/utils/validate";
 import { cache as reactCache } from "react";
 import "server-only";
+import { Category } from "../category/category.model";
 import { productCache } from "./cache";
 import { Product } from "./product.model";
 
@@ -12,7 +13,10 @@ export const getProducts = reactCache(() =>
     async () => {
       return transformObject(
         await Product.find({})
-          .populate("category")
+          .populate({
+            path: "category",
+            model: Category,
+          })
           .sort({ createdAt: -1 })
           .lean()
       );
