@@ -39,7 +39,6 @@ export default function ForgotPasswordForm() {
   const handleOnSubmit = async (data) => {
     setLoading(true);
     try {
-      console.log(data);
       const response = await forgotPasswordAction(data);
       if (response) {
         router.push("/forgot-password/email-sent");

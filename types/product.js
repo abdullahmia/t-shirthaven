@@ -16,8 +16,7 @@ export const ZCreateProduct = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   price: z.number().positive({ message: "Price must be a positive number" }),
   category: z.string().min(1, { message: "Category is required" }),
-  SKU: z.string().min(1, { message: "SKU is required" }),
-  stockStatus: stockStatusEnum,
+  sku: z.string().min(1, { message: "SKU is required" }),
   description: z.string().optional(),
   availableQuantity: z.number().int().nonnegative({
     message: "Available quantity must be a non-negative integer",
@@ -33,7 +32,7 @@ export const ZUpdateProduct = z.object({
     .positive({ message: "Price must be a positive number" })
     .optional(),
   category: z.string().min(1, { message: "Category is required" }).optional(),
-  SKU: z.string().min(1, { message: "SKU is required" }).optional(),
+  sku: z.string().min(1, { message: "SKU is required" }).optional(),
   stockStatus: stockStatusEnum.optional(),
   description: z.string().optional(),
   availableQuantity: z

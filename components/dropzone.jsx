@@ -1,12 +1,12 @@
+import Image from "next/image";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 
 export default function Dropzone({
   onUpload,
   acceptedFileTypes = ["pdf", "docx", "doc", "png", "jpg", "jpeg"],
-  title = "Drop files here to upload",
-  subTitle = "To upload file size is (Max 5Mb) and allowed file types are (.doc, .docx, .pdf)",
   loading = false,
-  maxFileSize = 5,
+  maxFileSize = 1,
   className = "",
 }) {
   const [file, setFile] = useState(null);
@@ -33,9 +33,11 @@ export default function Dropzone({
     const fileSize = file?.size / 1024 / 1024;
     const fileType = file?.type?.split("/")[1];
     if (fileSize > maxFileSize) {
+      toast.error(`File size should be less than ${maxFileSize}MB`);
       setError(`File size should be less than ${maxFileSize}MB`);
       return;
     } else if (!acceptedFileTypes.includes(fileType)) {
+      toast.error("Invalid file type");
       setError("Invalid file type");
       return;
     } else {
@@ -50,9 +52,11 @@ export default function Dropzone({
     const fileSize = file?.size / 1024 / 1024;
     const fileType = file?.type?.split("/")[1];
     if (fileSize > maxFileSize) {
+      toast.error(`File size should be less than ${maxFileSize}MB`);
       setError(`File size should be less than ${maxFileSize}MB`);
       return;
     } else if (!acceptedFileTypes.includes(fileType)) {
+      toast.error("Invalid file type");
       setError("Invalid file type");
       return;
     } else {
@@ -63,7 +67,7 @@ export default function Dropzone({
 
   return (
     <div
-      className={`relative rounded-lg border-2 border-dashed py-6 px-6 ${
+      className={`relative h-20 w-20 rounded-lg flex items-center justify-center border-2 border-dashed ${
         dragOver
           ? "border-primary"
           : error
@@ -81,17 +85,20 @@ export default function Dropzone({
           multiple
           onChange={handleInputChange}
           className={`
-            absolute left-0 top-0 z-10 h-full w-full opacity-0 ${
+            absolute left-0 top-0 z-10 h-20 w-20 opacity-0 ${
               loading ? "cursor-default" : "cursor-pointer"
             }
           `}
           disabled={loading}
         />
         <div className="flex flex-col items-center justify-center gap-4">
-          <i className="fal fa-file-upload text-3xl text-gray-400"></i>
-          <p className="text-lg font-medium">{file ? file.name : title}</p>
-          <p className="text-sm text-gray-500">{subTitle}</p>
-          {error && <p className="text-red-500">{error}</p>}
+          <Image
+            class="w-10"
+            src="/assets/icons/upload-cicle.svg"
+            alt="file upload icon"
+            width="40"
+            height="40"
+          />
         </div>
       </div>
     </div>

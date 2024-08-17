@@ -32,7 +32,7 @@ const data = [
   },
 ];
 
-export default function ProductTable() {
+export default function ProductTable({ products }) {
   const columns = [
     {
       accessorKey: "name",
@@ -40,16 +40,17 @@ export default function ProductTable() {
         return <div className="text-start lg:w-[250px]">Name</div>;
       },
       cell: ({ row }) => {
-        const image = row?.original?.image;
+        const image = row?.original?.images[0];
+        const title = row?.original?.title;
         return (
           <div className="capitalize flex items-center gap-2">
             <Image
-              src={image}
+              src={image?.url}
               width={48}
               height={48}
-              alt={row.getValue("name")}
+              alt={row.getValue("title")}
             />
-            <span>{row.getValue("name")}</span>
+            <span>{title}</span>
           </div>
         );
       },
@@ -77,13 +78,15 @@ export default function ProductTable() {
       },
     },
     {
-      accessorKey: "stock",
+      accessorKey: "stockStatus",
       header: () => {
         return <div className="text-start">Stock</div>;
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start capitalize">{row?.getValue("stock")}</div>
+          <div className="text-start capitalize">
+            {row?.getValue("stockStatus")}
+          </div>
         );
       },
     },
@@ -92,9 +95,10 @@ export default function ProductTable() {
       header: () => {
         return <div className="text-start">Category</div>;
       },
-      cell: ({ row }) => (
-        <div className="text-start capitalize">{row?.getValue("category")}</div>
-      ),
+      cell: ({ row }) => {
+        const category = row?.original?.category?.name;
+        return <div className="text-start capitalize">{category}</div>;
+      },
     },
     {
       accessorKey: "action",
@@ -133,7 +137,7 @@ export default function ProductTable() {
     <div>
       <DataTable
         tableTitle="Products"
-        data={data}
+        data={products}
         columns={columns}
         extraFilterActions={
           <Link className={cn(buttonVariants({}))} href={"/admin/products/new"}>

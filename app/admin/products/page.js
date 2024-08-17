@@ -1,3 +1,4 @@
+import { getProducts } from "@/services/product/service";
 import ProductTable from "./components/product-table";
 
 export const metadata = {
@@ -6,10 +7,11 @@ export const metadata = {
     "Manage products inventory. Add, edit, delete products. Manage stock",
 };
 
-export default function AdminProducts() {
+export default async function AdminProducts() {
+  const products = await getProducts();
   return (
     <div>
-      <ProductTable />
+      <ProductTable products={products} />
     </div>
   );
 }

@@ -1,11 +1,14 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { model, models, Schema } from "mongoose";
 import slugify from "slugify";
 
 const productSchema = new Schema(
   {
     title: { type: String, required: true },
     price: { type: Number, required: true },
-    category: { type: String, required: true },
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
     sku: { type: String, required: true, unique: true },
     stockStatus: {
       type: String,
@@ -19,13 +22,13 @@ const productSchema = new Schema(
     images: {
       type: [
         new mongoose.Schema({
-          id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+          _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
           url: { type: String, required: true },
         }),
       ],
       default: [],
     },
-    slug: { type: String, unique: true, required: true },
+    slug: { type: String, unique: true },
   },
   { timestamps: true }
 );
@@ -35,7 +38,10 @@ const productSchema = new Schema(
  */
 productSchema.pre("save", function (next) {
   if (this.isModified("title") || this.isNew) {
-    this.slug = slugify(this.title, { lower: true, strict: true });
+    this.slug = `${slugify(this.title, {
+      lower: true,
+      strict: true,
+    })}-${Date.now()}`;
   }
 
   if (this.availableQuantity <= 0) {

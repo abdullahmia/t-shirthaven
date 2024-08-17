@@ -32,7 +32,6 @@ export default function DeleteCategoryModal({ id }) {
       setLoading(false);
       setOpen(false);
     } catch (error) {
-      console.log(error?.message);
       toast.error(error.message);
     }
   };

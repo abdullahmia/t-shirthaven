@@ -44,7 +44,6 @@ export default function AddressForm({ initialData }) {
   const handleOnSubmit = async (data) => {
     setLoading(true);
     try {
-      console.log(data);
       await updateUserAction(initialData.id, {
         address: data,
       });
