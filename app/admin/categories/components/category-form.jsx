@@ -183,7 +183,7 @@ export default function CategoryForm({ isEdit = false, category }) {
                         />
                       </div>
                     )}
-                    {JSON.stringify(isFileObject(getValues("image")))}
+
                     {/* Uploaded images */}
                     {getValues("image") && (
                       <div className="w-full flex flex-wrap gap-2 mt-5">

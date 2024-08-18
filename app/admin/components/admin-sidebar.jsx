@@ -7,15 +7,16 @@ import { usePathname } from "next/navigation";
 const menus = [
   { title: "Dashboard", url: "/admin", icon: "/assets/icons/dashboard.png" },
   {
-    title: "Products",
-    url: "/admin/products",
-    icon: "/assets/icons/products.png",
-  },
-  {
     title: "Categories",
     url: "/admin/categories",
     icon: "/assets/icons/package.png",
   },
+  {
+    title: "Products",
+    url: "/admin/products",
+    icon: "/assets/icons/products.png",
+  },
+
   {
     title: "Orders",
     url: "/admin/orders",

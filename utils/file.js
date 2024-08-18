@@ -29,3 +29,23 @@ export function isFileObject(input) {
     return false;
   }
 }
+
+/**
+ * @name extractPublicId
+ * @description Extracts the public ID from a Cloudinary URL and prepends it with a folder path.
+ * @param {string} cloudinaryUrl - The Cloudinary URL from which to extract the public ID.
+ * @returns {string} The public ID prepended with the folder path `fashion-store/`.
+ * @example
+ * // Example usage:
+ * const url = 'https://res.cloudinary.com/demo/image/upload/v1630000000/sample.jpg';
+ * const publicId = extractPublicId(url);
+ * console.log(publicId); // Output: 'fashion-store/sample'
+ */
+export function extractPublicId(cloudinaryUrl) {
+  const parts = cloudinaryUrl.split("/");
+
+  const fileNameWithExtension = parts[parts.length - 1];
+  const publicId = fileNameWithExtension.split(".").slice(0, -1).join(".");
+
+  return `fashion-store/${publicId}`;
+}

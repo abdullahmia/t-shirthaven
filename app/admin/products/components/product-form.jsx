@@ -9,15 +9,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SIZE_OPTIONS } from "@/constants";
 import { fileUpload } from "@/lib/storage-mangement";
+import { isFileObject } from "@/utils/file";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { addProductAction } from "../action";
+import { addProductAction, updateProductAction } from "../action";
 
-export default function ProductForm({ categoryOptions = [], isEdit = false }) {
+export default function ProductForm({
+  categoryOptions = [],
+  isEdit = false,
+  product,
+}) {
   // Local State
   const [loading, setLoading] = useState(false);
 
@@ -67,7 +72,7 @@ export default function ProductForm({ categoryOptions = [], isEdit = false }) {
     setValue("size", size);
   };
 
-  const handleFormSubmit = async (data) => {
+  const addProductHandler = async (data) => {
     setLoading(true);
 
     try {
@@ -96,6 +101,63 @@ export default function ProductForm({ categoryOptions = [], isEdit = false }) {
     }
   };
 
+  const updateProductHandler = async (data) => {
+    setLoading(true);
+
+    try {
+      const newUploadedImages = data?.images?.filter(isFileObject);
+      const oldImages = data?.images?.filter((image) => !isFileObject(image));
+
+      // get the deleted images
+      const deletedImages = product?.images
+        ?.map((image) =>
+          oldImages?.map((oldImage) => oldImage.url).includes(image.url)
+            ? null
+            : image
+        )
+        .filter(Boolean);
+
+      // upload new images
+      let newImageUrls = [];
+      if (newUploadedImages?.length) {
+        newImageUrls = await Promise.all(
+          newUploadedImages?.map(async (image) => {
+            const imageUrl = await fileUpload(image);
+            return { url: imageUrl.url };
+          })
+        );
+      }
+
+      data.images = [...oldImages, ...newImageUrls];
+      data.deletedImages = deletedImages;
+      data.price = parseInt(data?.price);
+      data.availableQuantity = parseInt(data?.availableQuantity);
+
+      await updateProductAction(product?.id, data);
+      toast.success("Product updated successfully");
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast.error(error?.message);
+    }
+  };
+
+  /**
+   * EFFECTS
+   */
+  useEffect(() => {
+    if (isEdit && product) {
+      setValue("title", product.title);
+      setValue("price", product.price);
+      setValue("category", product.category?.id);
+      setValue("sku", product.sku);
+      setValue("description", product.description);
+      setValue("availableQuantity", product.availableQuantity);
+      setValue("size", product.size);
+      setValue("images", product.images);
+    }
+  }, [isEdit, product, setValue]);
+
   return (
     <div className="bg-white rounded-lg border border-[#E9E9EB]">
       <div className="p-7 border-b border-[#E9E9EB]">
@@ -104,7 +166,12 @@ export default function ProductForm({ categoryOptions = [], isEdit = false }) {
         </h2>
       </div>
 
-      <form onSubmit={handleSubmit(handleFormSubmit)} className="p-7 space-y-5">
+      <form
+        onSubmit={handleSubmit(
+          !isEdit ? addProductHandler : updateProductHandler
+        )}
+        className="p-7 space-y-5"
+      >
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-24">
           <div className="space-y-6">
             {/* Product title */}
@@ -153,7 +220,7 @@ export default function ProductForm({ categoryOptions = [], isEdit = false }) {
                 render={({ field }) => (
                   <SelectInput
                     className="h-11"
-                    placeholder="Select category"
+                    placeholder={isEdit ? product?.category?.name : "Select"}
                     options={categoryOptions}
                     onChange={field.onChange}
                   />
@@ -197,8 +264,11 @@ export default function ProductForm({ categoryOptions = [], isEdit = false }) {
                 rules={{
                   required: "Available quantity is required",
                   valueAsNumber: true,
-                  validate: (value) =>
-                    value > 0 || "Available quantity should be greater than 0",
+                  validate: (value) => {
+                    if (isNaN(value)) {
+                      return "Available quantity should be a number";
+                    }
+                  },
                 }}
               />
               {errors?.availableQuantity && (
@@ -222,7 +292,11 @@ export default function ProductForm({ categoryOptions = [], isEdit = false }) {
                         getValues("images")?.map((image, index) => (
                           <div key={index} className="relative w-20 h-20">
                             <Image
-                              src={URL.createObjectURL(image)}
+                              src={
+                                isFileObject(image)
+                                  ? URL.createObjectURL(image)
+                                  : image.url
+                              }
                               height={40}
                               width={56}
                               alt="product"

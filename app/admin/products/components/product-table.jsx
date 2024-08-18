@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table";
+import DeleteModal from "@/components/delete-modal";
 import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,28 +10,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { Ellipsis, FilePenLine, Trash } from "lucide-react";
+import { Ellipsis, FilePenLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-const data = [
-  {
-    image: "/assets/images/product.png",
-    name: "Raw Black T-Shirt Lineup",
-    sku: "47514501",
-    stock: "in stock",
-    price: "$20",
-    category: "T-Shirts",
-  },
-  {
-    image: "/assets/images/product.png",
-    name: "Raw Black T-Shirt Lineup",
-    sku: "47514501",
-    stock: "in stock",
-    price: "$20",
-    category: "T-Shirts",
-  },
-];
+import { deleteProductAction } from "../action";
 
 export default function ProductTable({ products }) {
   const columns = [
@@ -42,6 +25,7 @@ export default function ProductTable({ products }) {
       cell: ({ row }) => {
         const image = row?.original?.images[0];
         const title = row?.original?.title;
+        const slug = row?.original?.slug;
         return (
           <div className="capitalize flex items-center gap-2">
             <Image
@@ -50,7 +34,14 @@ export default function ProductTable({ products }) {
               height={48}
               alt={row.getValue("title")}
             />
-            <span>{title}</span>
+            <Link
+              href={`/products/${slug}`}
+              target="_blank"
+              className="hover:underline font-semibold"
+            >
+              {title?.slice(0, 40)}
+              {title?.length > 40 && "..."}
+            </Link>
           </div>
         );
       },
@@ -73,7 +64,9 @@ export default function ProductTable({ products }) {
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start capitalize">{row?.getValue("price")}</div>
+          <div className="text-start capitalize">
+            $ {row?.getValue("price")}
+          </div>
         );
       },
     },
@@ -115,7 +108,7 @@ export default function ProductTable({ products }) {
           <DropdownMenuContent align="end" className="w-32 mt-4">
             <DropdownMenuItem className="cursor-pointer w-full" asChild>
               <Link
-                href={`/admin/products/${1}`}
+                href={`/admin/products/${row?.original?.id}`}
                 className="flex items-center gap-2"
               >
                 <FilePenLine size={17} />
@@ -123,10 +116,10 @@ export default function ProductTable({ products }) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer w-full" asChild>
-              <button className="flex items-center gap-2">
-                <Trash size={17} />
-                Detete
-              </button>
+              <DeleteModal
+                key="product"
+                onDelete={() => deleteProductAction(row?.original?.id)}
+              />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

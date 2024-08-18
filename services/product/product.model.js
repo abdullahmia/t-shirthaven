@@ -38,10 +38,12 @@ const productSchema = new Schema(
  */
 productSchema.pre("save", function (next) {
   if (this.isModified("title") || this.isNew) {
-    this.slug = `${slugify(this.title, {
-      lower: true,
-      strict: true,
-    })}-${Date.now()}`;
+    if (this.title) {
+      this.slug = `${slugify(this.title, {
+        lower: true,
+        strict: true,
+      })}-${Date.now()}`;
+    }
   }
 
   if (this.availableQuantity <= 0) {

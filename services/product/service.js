@@ -1,6 +1,9 @@
-import { ZCreateProduct } from "@/types/product";
+import { deleteImageFromCloudinary } from "@/lib/cloudinary";
+import { ZId } from "@/types/common";
+import { ZCreateProduct, ZUpdateProduct } from "@/types/product";
 import { cache } from "@/utils/cache";
 import { transformObject } from "@/utils/convert-data";
+import { extractPublicId } from "@/utils/file";
 import { validateInputs } from "@/utils/validate";
 import { cache as reactCache } from "react";
 import "server-only";
@@ -28,15 +31,111 @@ export const getProducts = reactCache(() =>
   )()
 );
 
+export const getProductById = reactCache((id) =>
+  cache(
+    async () => {
+      validateInputs([id, ZId]);
+
+      try {
+        const category = await Product.findOne({ _id: id })
+          .populate({
+            path: "category",
+            model: Category,
+          })
+          .lean();
+        return transformObject(category);
+      } catch (error) {
+        throw new Error("Failed to get category");
+      }
+    },
+    [productCache.tag.byId(id)],
+    {
+      tags: [productCache.tag.byId(id)],
+    }
+  )()
+);
 export const addProduct = async (data) => {
   validateInputs([data, ZCreateProduct]);
 
   try {
-    const product = await Product.create(data);
-    console.log(product);
-    // return transformObject(product);
+    await Product.create(data);
+
+    productCache.revalidate({ count: true });
   } catch (error) {
-    console.log(error);
+    throw new Error(error?.message);
+  }
+};
+
+export const deleteProduct = async (id) => {
+  validateInputs([id, ZId]);
+
+  try {
+    const product = await Product.findByIdAndDelete(id);
+
+    // delete the images from the cloudinary
+    product?.images?.map(async (image) => {
+      const publicId = extractPublicId(image?.url);
+      // delete the image from cloudinary
+      await deleteImageFromCloudinary(publicId);
+    });
+
+    productCache.revalidate({ count: true });
+  } catch (error) {
+    throw new Error(error?.message);
+  }
+};
+
+export const updateProduct = async (id, data) => {
+  validateInputs([id, ZId], [data, ZUpdateProduct]);
+
+  try {
+    const product = await Product.findById(id);
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    // dalete the deletedImages from the data
+    const deletedImages = data.deletedImages;
+    if (deletedImages?.length > 0) {
+      const deletedImagesIds = deletedImages.map((image) => image.id);
+      // delete the images from the cloudinary
+      deletedImages?.map(async (image) => {
+        const publicId = extractPublicId(image?.url);
+        // delete the image from cloudinary
+        await deleteImageFromCloudinary(publicId);
+      });
+
+      await Product.updateOne(
+        { _id: id },
+        {
+          $pull: {
+            images: {
+              _id: {
+                $in: deletedImagesIds,
+              },
+            },
+          },
+        }
+      );
+    }
+
+    delete data.deletedImages;
+
+    product.title = data.title;
+    product.price = data.price;
+    product.category = data.category;
+    product.sku = data.sku;
+    product.stockStatus = product.stockStatus;
+    product.description = data.description;
+    product.availableQuantity = data.availableQuantity;
+    product.size = data.size;
+    product.images = data.images;
+    product.slug = product.slug;
+
+    await product.save();
+
+    productCache.revalidate({ id: id, count: true });
+  } catch (error) {
     throw new Error(error?.message);
   }
 };
