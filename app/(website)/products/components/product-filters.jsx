@@ -1,11 +1,11 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
-import { CATEGORY_OPTIONS, SIZE_OPTIONS } from "@/constants";
+import { SIZE_OPTIONS } from "@/constants";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-export default function ProductFilters() {
+export default function ProductFilters({ categories }) {
   // Local state
   const [filter, setFilter] = useState({
     categories: [],
@@ -13,22 +13,36 @@ export default function ProductFilters() {
     size: "",
   });
 
+  // hooks
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   /**
    * HANDLERS
    */
   const handleCategory = (category) => {
-    setFilter({ ...filter, categories: [...filter.categories, category] });
+    const params = new URLSearchParams(searchParams);
+    if (category) {
+      params.set("category", category);
+    } else {
+      params.delete("category");
+    }
+    replace(`${pathname}?${params.toString()}`);
   };
 
   const handleSize = (size) => {
-    setFilter({ ...filter, size });
+    const params = new URLSearchParams(searchParams);
+    if (size) {
+      params.set("size", size);
+    } else {
+      params.delete("size");
+    }
+    replace(`${pathname}?${params.toString()}`);
   };
 
-  const handlePriceRangeChange = (value) => {
-    setFilter((prev) => ({
-      ...prev,
-      price: [prev.price[0], value],
-    }));
+  const handleResetSearchParam = () => {
+    replace(pathname);
   };
 
   return (
@@ -37,21 +51,21 @@ export default function ProductFilters() {
       <div>
         <h2 className="text-md text-primary font-semibold">Categories</h2>
         <ul className="space-y-4 mt-4">
-          {CATEGORY_OPTIONS.map((option, optionIdx) => (
+          {categories?.map((option, optionIdx) => (
             <li key={option.value} className="flex items-center">
               <Checkbox
                 type="checkbox"
-                id={`category-${optionIdx}`}
-                onCheckedChange={() => handleCategory(option.value)}
+                id={`category-${option?.id}`}
+                onCheckedChange={() => handleCategory(option?.id)}
                 checked={
-                  filter.categories.includes(option.value) ? true : false
+                  searchParams.get("category") === option?.id?.toString()
                 }
               />
               <label
-                htmlFor={`category-${optionIdx}`}
+                htmlFor={`category-${option?.id}`}
                 className="ml-3 text-sm text-secondary cursor-pointer"
               >
-                {option.label}
+                {option?.name}
               </label>
             </li>
           ))}
@@ -77,7 +91,7 @@ export default function ProductFilters() {
       </div>
 
       {/* Price */}
-      <div>
+      {/* <div>
         <div className="flex items-center justify-between">
           <h2 className="text-md text-primary font-semibold">Size</h2>
           <p className="text-secondary text-sm ">$ {filter?.price[1]}</p>
@@ -88,7 +102,7 @@ export default function ProductFilters() {
             onValueChange={(value) => handlePriceRangeChange(value[0])}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

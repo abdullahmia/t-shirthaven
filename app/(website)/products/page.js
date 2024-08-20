@@ -1,4 +1,5 @@
 import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
+import { getCategories } from "@/services/category/service";
 import { getProducts } from "@/services/product/service";
 import ProductCard from "../components/product-card";
 import ProductFilters from "./components/product-filters";
@@ -12,6 +13,7 @@ export const metadata = {
 
 export default async function ProductPage() {
   const products = await getProducts();
+  const categories = await getCategories();
   return (
     <div className="">
       {/* Breadcrumb */}
@@ -20,7 +22,7 @@ export default async function ProductPage() {
       <div className="container grid grid-cols-12 gap-7 mt-10 responsive">
         <div className="lg:col-span-3 hidden lg:block">
           {/* Filters */}
-          <ProductFilters />
+          <ProductFilters categories={categories} />
         </div>
         <div className="lg:col-span-9 col-span-12">
           <ProductSort products={products} />

@@ -14,11 +14,12 @@ import { Ellipsis, FilePenLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { deleteProductAction } from "../action";
+import ProductFilters from "./product-filter";
 
-export default function ProductTable({ products }) {
+export default function ProductTable({ products, categories }) {
   const columns = [
     {
-      accessorKey: "name",
+      accessorKey: "title",
       header: () => {
         return <div className="text-start lg:w-[250px]">Name</div>;
       },
@@ -133,9 +134,15 @@ export default function ProductTable({ products }) {
         data={products}
         columns={columns}
         extraFilterActions={
-          <Link className={cn(buttonVariants({}))} href={"/admin/products/new"}>
-            Add Product
-          </Link>
+          <div className="flex items-center gap-3">
+            <ProductFilters categories={categories} />
+            <Link
+              className={cn(buttonVariants({}))}
+              href={"/admin/products/new"}
+            >
+              Add Product
+            </Link>
+          </div>
         }
         searchBy={"name"}
         enableShowPerPage={false}
