@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Error({ error }) {
+export default function NotFound() {
   return (
     <div className="container flex items-center justify-center h-full">
       <div className="flex flex-col justify-center items-center">
