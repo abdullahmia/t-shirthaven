@@ -6,7 +6,13 @@ import AdminSidebar from "./components/admin-sidebar";
 
 export default async function AdminLayout({ children }) {
   const session = await auth();
-  const user = await getUserByEmail(session?.user?.email);
+  let user;
+
+  if (!session) {
+    return redirect("/login");
+  }
+
+  if (session) user = await getUserByEmail(session?.user?.email);
 
   if (user?.role !== "admin") {
     return redirect("/account");

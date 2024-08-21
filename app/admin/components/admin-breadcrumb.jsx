@@ -6,6 +6,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -37,7 +38,12 @@ export default function AdminBreadcrumb() {
         </BreadcrumbList>
       </div>
       <div>
-        <Button variant="link">
+        <Button
+          variant="link"
+          onClick={() => {
+            signOut();
+          }}
+        >
           <Image
             src={"/assets/icons/logout.png"}
             width={20}
