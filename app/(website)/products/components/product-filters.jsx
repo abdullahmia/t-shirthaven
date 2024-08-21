@@ -3,17 +3,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { SIZE_OPTIONS } from "@/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
 export default function ProductFilters({ categories }) {
-  // Local state
-  const [filter, setFilter] = useState({
-    categories: [],
-    price: [0, 100],
-    size: "",
-  });
-
-  // hooks
+  // Hooks
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -39,10 +31,6 @@ export default function ProductFilters({ categories }) {
       params.delete("size");
     }
     replace(`${pathname}?${params.toString()}`);
-  };
-
-  const handleResetSearchParam = () => {
-    replace(pathname);
   };
 
   return (
@@ -80,7 +68,7 @@ export default function ProductFilters({ categories }) {
             <button
               onClick={() => handleSize(size.value)}
               className={`border text-sm text-secondary uppercase py-2 px-4 rounded-sm ${
-                filter.size === size.value ? "border-gray-800" : ""
+                searchParams.get("size") === size.value ? "border-gray-800" : ""
               }`}
               key={size.value}
             >

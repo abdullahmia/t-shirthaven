@@ -4,14 +4,19 @@ import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 
-export const Editor = ({ onChange, value }) => {
+export const Editor = ({ onChange, value, reactOnly = false }) => {
   const ReactQuill = useMemo(
     () => dynamic(() => import("react-quill"), { ssr: false }),
     []
   );
   return (
     <div className="bg-white">
-      <ReactQuill theme="snow" value={value} onChange={onChange} />
+      <ReactQuill
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        readOnly={reactOnly}
+      />
     </div>
   );
 };

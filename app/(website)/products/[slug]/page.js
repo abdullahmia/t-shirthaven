@@ -1,5 +1,6 @@
 import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getProductBySlug } from "@/services/product/service";
 import { Ellipsis, Star, StarIcon } from "lucide-react";
 import AddToCart from "./components/add-to-cart";
 import ImageGallery from "./components/image-gallery";
@@ -11,7 +12,9 @@ export const metadata = {
   description: "Product Detail page",
 };
 
-export default function ProductDetail() {
+export default async function ProductDetail({ params: { slug } }) {
+  const product = await getProductBySlug(slug);
+
   return (
     <div className="pt-10">
       <GenerateBreadcrumb variant="" />
@@ -19,12 +22,12 @@ export default function ProductDetail() {
       <div className="container responsive">
         <div class="py-6">
           <div class="flex flex-col lg:flex-row lg:gap-32 gap-10">
-            <ImageGallery />
+            <ImageGallery images={product?.images} />
 
             <div className="w-full lg:w-1/2">
               <div className="flex items-center justify-between">
                 <h2 className="flex-1 text-2xl font-semibold text-primary">
-                  Raw Black T-Shirt Lineup
+                  {product?.title}
                 </h2>
                 <ProductShare />
               </div>
@@ -34,14 +37,14 @@ export default function ProductDetail() {
                   <Star size={18} color="#5c5f6a" />
                   4.2 — 54 Reviews
                 </div>
-                <div className="text-secondary text-xs font-semibold border text-center py-1 px-4 rounded-full">
-                  IN STOCK
+                <div className="text-secondary text-xs font-semibold border text-center py-1 px-4 rounded-full uppercase">
+                  {product?.stockStatus}
                 </div>
               </div>
 
               <div className="mt-8">
                 <h3 className="text-primary font-semibold text-[18px]">
-                  $75.00
+                  ${product?.price}
                 </h3>
               </div>
 
@@ -84,38 +87,9 @@ export default function ProductDetail() {
                 </h2>
 
                 <div className="mt-5 space-y-2">
-                  <p className="text-sm text-secondary">
-                    Elevate your everyday style with our Men's Black T-Shirts,
-                    the ultimate wardrobe essential for modern men. Crafted with
-                    meticulous attention to detail and designed for comfort,
-                    these versatile black tees are a must-have addition to your
-                    collection. The classic black color never goes out of style.
-                    Whether you're dressing up for a special occasion or keeping
-                    it casual, these black t-shirts are the perfect choice,
-                    effortlessly complementing any outfit.
-                  </p>
-
-                  <p className="text-sm text-secondary">
-                    Elevate your everyday style with our Men's Black T-Shirts,
-                    the ultimate wardrobe essential for modern men. Crafted with
-                    meticulous attention to detail and designed for comfort,
-                    these versatile black tees are a must-have addition to your
-                    collection. The classic black color never goes out of style.
-                    Whether you're dressing up for a special occasion or keeping
-                    it casual, these black t-shirts are the perfect choice,
-                    effortlessly complementing any outfit.
-                  </p>
-
-                  <p className="text-sm text-secondary">
-                    Elevate your everyday style with our Men's Black T-Shirts,
-                    the ultimate wardrobe essential for modern men. Crafted with
-                    meticulous attention to detail and designed for comfort,
-                    these versatile black tees are a must-have addition to your
-                    collection. The classic black color never goes out of style.
-                    Whether you're dressing up for a special occasion or keeping
-                    it casual, these black t-shirts are the perfect choice,
-                    effortlessly complementing any outfit.
-                  </p>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: product?.description }}
+                  ></div>
                 </div>
               </div>
             </TabsContent>

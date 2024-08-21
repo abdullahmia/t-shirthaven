@@ -1,3 +1,6 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -6,24 +9,63 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import MobileProductFilter from "./mobile-product-filters";
 
 const SORT_OPTIONS = [
-  { label: "Low to High", value: "price-asc" },
-  { label: "High to Low", value: "price-desc" },
+  { label: "Low to High", value: "asc" },
+  { label: "High to Low", value: "desc" },
 ];
 
-export default function ProductSort({ products }) {
+export default function ProductSort({ products, categories }) {
+  // Hooks
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  /**
+   * HANDLERS
+   */
+
+  const handleSort = (sort) => {
+    const params = new URLSearchParams(searchParams);
+    if (sort) {
+      params.set("sort", sort);
+    } else {
+      params.delete("sort");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleResetSearchParam = () => {
+    replace(pathname);
+  };
+
   return (
     <div className="pb-5 flex items-center justify-between">
-      <p className="text-sm text-secondary">
-        Showing {products?.length} of {products?.length} results.
-      </p>
+      <div className="flex items-center">
+        <p className="text-sm text-secondary">
+          Showing {products?.length} of {products?.length} results.
+        </p>
+
+        {searchParams.get("category") ||
+        searchParams.get("price") ||
+        searchParams.get("size") ||
+        searchParams.get("sort") ? (
+          <Button
+            variant="link"
+            className="underline"
+            onClick={handleResetSearchParam}
+          >
+            <span className="text-sm text-primary">Reset filter</span>
+          </Button>
+        ) : null}
+      </div>
       <div className="flex items-center justify-end gap-3">
-        <Select>
+        <Select onValueChange={handleSort}>
           <SelectTrigger className="w-[180px] text-sm text-secondary border-none !border-b focus:ring-0 focus:ring-offset-0  overflow-hidden">
             <SelectValue
-              placeholder="SORT BY"
+              placeholder={searchParams?.get("sort") || "SORT BY"}
               className="txt-sm text-secondary"
             />
           </SelectTrigger>
@@ -43,7 +85,7 @@ export default function ProductSort({ products }) {
         </Select>
 
         {/* Filter for mobile */}
-        <MobileProductFilter />
+        <MobileProductFilter categories={categories} />
       </div>
     </div>
   );

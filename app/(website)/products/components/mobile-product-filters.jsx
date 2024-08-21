@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Sheet,
@@ -8,12 +9,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Slider } from "@/components/ui/slider";
-import { CATEGORY_OPTIONS, SIZE_OPTIONS } from "@/constants";
+import { SIZE_OPTIONS } from "@/constants";
 import { Filter } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-export default function MobileProductFilter() {
+export default function MobileProductFilter({ categories }) {
   // Local state
   const [filter, setFilter] = useState({
     categories: [],
@@ -21,22 +22,36 @@ export default function MobileProductFilter() {
     size: "",
   });
 
+  // Hooks
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   /**
    * HANDLERS
    */
   const handleCategory = (category) => {
-    setFilter({ ...filter, categories: [...filter.categories, category] });
+    const params = new URLSearchParams(searchParams);
+    if (category) {
+      params.set("category", category);
+    } else {
+      params.delete("category");
+    }
+    replace(`${pathname}?${params.toString()}`);
   };
 
   const handleSize = (size) => {
-    setFilter({ ...filter, size });
+    const params = new URLSearchParams(searchParams);
+    if (size) {
+      params.set("size", size);
+    } else {
+      params.delete("size");
+    }
+    replace(`${pathname}?${params.toString()}`);
   };
 
-  const handlePriceRangeChange = (value) => {
-    setFilter((prev) => ({
-      ...prev,
-      price: [prev.price[0], value],
-    }));
+  const handleResetSearchParam = () => {
+    replace(pathname);
   };
 
   return (
@@ -53,21 +68,21 @@ export default function MobileProductFilter() {
           <div className="mt-5">
             <h2 className="text-md text-primary font-semibold">Categories</h2>
             <ul className="space-y-4 mt-4">
-              {CATEGORY_OPTIONS.map((option, optionIdx) => (
+              {categories?.map((option, optionIdx) => (
                 <li key={option.value} className="flex items-center">
                   <Checkbox
                     type="checkbox"
-                    id={`category-${optionIdx}`}
-                    onCheckedChange={() => handleCategory(option.value)}
+                    id={`category-${option?.id}`}
+                    onCheckedChange={() => handleCategory(option?.id)}
                     checked={
-                      filter.categories.includes(option.value) ? true : false
+                      searchParams.get("category") === option?.id?.toString()
                     }
                   />
                   <label
-                    htmlFor={`category-${optionIdx}`}
+                    htmlFor={`category-${option?.id}`}
                     className="ml-3 text-sm text-secondary cursor-pointer"
                   >
-                    {option.label}
+                    {option.name}
                   </label>
                 </li>
               ))}
@@ -82,7 +97,9 @@ export default function MobileProductFilter() {
                 <button
                   onClick={() => handleSize(size.value)}
                   className={`border text-sm text-secondary uppercase py-2 px-4 rounded-sm ${
-                    filter.size === size.value ? "border-gray-800" : ""
+                    searchParams.get("size") === size.value
+                      ? "border-gray-800"
+                      : ""
                   }`}
                   key={size.value}
                 >
@@ -93,7 +110,7 @@ export default function MobileProductFilter() {
           </div>
 
           {/* Price */}
-          <div className="mt-5">
+          {/* <div className="mt-5">
             <div className="flex items-center justify-between">
               <h2 className="text-md text-primary font-semibold">Size</h2>
               <p className="text-secondary text-sm ">$ {filter?.price[1]}</p>
@@ -104,6 +121,17 @@ export default function MobileProductFilter() {
                 onValueChange={(value) => handlePriceRangeChange(value[0])}
               />
             </div>
+          </div> */}
+
+          <div className="mt-10">
+            <Button
+              onClick={handleResetSearchParam}
+              type="button"
+              className="w-full"
+              disabled={!searchParams.toString()}
+            >
+              Reset filter
+            </Button>
           </div>
         </SheetContent>
       </Sheet>

@@ -11,9 +11,36 @@ export const metadata = {
   description: "Products page",
 };
 
-export default async function ProductPage() {
-  const products = await getProducts();
+export default async function ProductPage({
+  searchParams: { category, size, sort },
+}) {
+  const allProducts = await getProducts();
   const categories = await getCategories();
+
+  // apply filters with category, size & sort.
+  const products = allProducts
+    .filter((product) => {
+      if (category) {
+        return product.category?.id === category;
+      }
+      return true;
+    })
+    .filter((product) => {
+      if (size) {
+        return product.size === size;
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      if (sort === "asc") {
+        return a.price - b.price;
+      }
+      if (sort === "desc") {
+        return b.price - a.price;
+      }
+      return 0;
+    });
+
   return (
     <div className="">
       {/* Breadcrumb */}
@@ -25,7 +52,7 @@ export default async function ProductPage() {
           <ProductFilters categories={categories} />
         </div>
         <div className="lg:col-span-9 col-span-12">
-          <ProductSort products={products} />
+          <ProductSort products={products} categories={categories} />
 
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7">
             {products?.map((product) => (

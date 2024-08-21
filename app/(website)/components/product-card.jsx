@@ -19,7 +19,8 @@ export default function ProductCard({ product }) {
         <Link href={`/products/${product?.slug}`}>
           <p className="text-secondary text-xs">{product?.category?.name}</p>
           <h2 className="text-primary text-md group-hover:underline">
-            {product?.title}
+            {product?.title?.slice(0, 31)}
+            {product?.title?.length > 31 && "..."}
           </h2>
         </Link>
 

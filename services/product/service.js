@@ -1,5 +1,5 @@
 import { deleteImageFromCloudinary } from "@/lib/cloudinary";
-import { ZId } from "@/types/common";
+import { ZId, ZSlug } from "@/types/common";
 import { ZCreateProduct, ZUpdateProduct } from "@/types/product";
 import { cache } from "@/utils/cache";
 import { transformObject } from "@/utils/convert-data";
@@ -37,15 +37,15 @@ export const getProductById = reactCache((id) =>
       validateInputs([id, ZId]);
 
       try {
-        const category = await Product.findOne({ _id: id })
+        const product = await Product.findOne({ _id: id })
           .populate({
             path: "category",
             model: Category,
           })
           .lean();
-        return transformObject(category);
+        return transformObject(product);
       } catch (error) {
-        throw new Error("Failed to get category");
+        throw new Error("Failed to get product");
       }
     },
     [productCache.tag.byId(id)],
@@ -54,6 +54,35 @@ export const getProductById = reactCache((id) =>
     }
   )()
 );
+
+export const getProductBySlug = reactCache((slug) =>
+  cache(
+    async () => {
+      validateInputs([slug, ZSlug]);
+
+      try {
+        const product = await Product.findOne({ slug: slug })
+          .populate({
+            path: "category",
+            model: Category,
+          })
+          .lean();
+        if (!product) {
+          throw new Error("Product not found");
+        }
+        return transformObject(product);
+      } catch (error) {
+        console.log(error);
+        throw new Error(error?.message);
+      }
+    },
+    [productCache.tag.bySlug(slug)],
+    {
+      tags: [productCache.tag.bySlug(slug)],
+    }
+  )()
+);
+
 export const addProduct = async (data) => {
   validateInputs([data, ZCreateProduct]);
 
