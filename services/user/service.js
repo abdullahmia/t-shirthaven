@@ -1,3 +1,4 @@
+import connectDB from "@/lib/db";
 import { ZCreateUser, ZUser } from "@/types/user";
 import { cache } from "@/utils/cache";
 import { transformObject } from "@/utils/convert-data";
@@ -10,6 +11,7 @@ import { User } from "./user.model";
 
 export const getUsers = reactCache(() =>
   cache(async () => {
+    await connectDB();
     return transformObject(await User.find().lean());
   })()
 );
@@ -20,6 +22,7 @@ export const getUserById = reactCache((id) =>
       validateInputs([id, z.string()]);
 
       try {
+        await connectDB();
         const user = await User.findOne({ _id: id }).lean();
         if (!user) {
           return null;
@@ -42,6 +45,7 @@ export const getUserByEmail = reactCache((email) =>
       validateInputs([email, z.string().email()]);
 
       try {
+        await connectDB();
         const user = await User.findOne({ email }).lean();
         if (!user) {
           return null;

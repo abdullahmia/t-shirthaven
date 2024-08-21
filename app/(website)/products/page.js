@@ -19,19 +19,19 @@ export default async function ProductPage({
 
   // apply filters with category, size & sort.
   const products = allProducts
-    .filter((product) => {
+    ?.filter((product) => {
       if (category) {
         return product.category?.id === category;
       }
       return true;
     })
-    .filter((product) => {
+    ?.filter((product) => {
       if (size) {
         return product.size === size;
       }
       return true;
     })
-    .sort((a, b) => {
+    ?.sort((a, b) => {
       if (sort === "asc") {
         return a.price - b.price;
       }

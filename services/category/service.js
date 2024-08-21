@@ -1,4 +1,5 @@
 import { deleteImageFromCloudinary } from "@/lib/cloudinary";
+import connectDB from "@/lib/db";
 import { ZCategoryInput } from "@/types/category";
 import { ZId } from "@/types/common";
 import { cache } from "@/utils/cache";
@@ -13,6 +14,7 @@ import { Category } from "./category.model";
 export const getCategories = reactCache(() =>
   cache(
     async () => {
+      await connectDB();
       return transformObject(
         await Category.find({}).sort({ createdAt: -1 }).lean()
       );
@@ -30,8 +32,11 @@ export const getCategoryById = reactCache((id) =>
       validateInputs([id, ZId]);
 
       try {
+        await connectDB();
         const category = await Category.findOne({ _id: id }).lean();
-        return transformObject(category);
+        if (!category) {
+          throw new Error("Category not found");
+        }
       } catch (error) {
         throw new Error("Failed to get category");
       }

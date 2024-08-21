@@ -1,4 +1,5 @@
 import { deleteImageFromCloudinary } from "@/lib/cloudinary";
+import connectDB from "@/lib/db";
 import { ZId, ZSlug } from "@/types/common";
 import { ZCreateProduct, ZUpdateProduct } from "@/types/product";
 import { cache } from "@/utils/cache";
@@ -14,6 +15,7 @@ import { Product } from "./product.model";
 export const getProducts = reactCache(() =>
   cache(
     async () => {
+      await connectDB();
       return transformObject(
         await Product.find({})
           .populate({
@@ -37,6 +39,7 @@ export const getProductById = reactCache((id) =>
       validateInputs([id, ZId]);
 
       try {
+        await connectDB();
         const product = await Product.findOne({ _id: id })
           .populate({
             path: "category",
@@ -61,6 +64,7 @@ export const getProductBySlug = reactCache((slug) =>
       validateInputs([slug, ZSlug]);
 
       try {
+        await connectDB();
         const product = await Product.findOne({ slug: slug })
           .populate({
             path: "category",
