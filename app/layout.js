@@ -1,6 +1,6 @@
 import { Toaster } from "sonner";
 
-import { connectDB } from "@/lib/db";
+import connectDB from "@/lib/db";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -13,7 +13,6 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   await connectDB();
-
   return (
     <html lang="en">
       <body className={inter.className}>

@@ -1,6 +1,10 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { store } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
+import { Provider } from "react-redux";
+import ProductAddToCart from "./product-add-to-cart";
 
 export default function ProductCard({ product }) {
   return (
@@ -25,13 +29,9 @@ export default function ProductCard({ product }) {
         </Link>
 
         <div className="text-sm flex items-center justify-between">
-          <Button
-            className="rounded-full text-xs text-secondary"
-            variant="outline"
-            size="wide"
-          >
-            Add to cart
-          </Button>
+          <Provider store={store}>
+            <ProductAddToCart product={product} />
+          </Provider>
           <p className="text-secondary">$ {product?.price}</p>
         </div>
       </div>
