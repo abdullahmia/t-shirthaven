@@ -2,7 +2,7 @@ import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getProductBySlug } from "@/services/product/service";
 import { Ellipsis, Star, StarIcon } from "lucide-react";
-import AddToCart from "./components/add-to-cart";
+import CartOptions from "./components/cart-options";
 import ImageGallery from "./components/image-gallery";
 import ProductShare from "./components/product-share";
 import Reviews from "./components/reviews";
@@ -31,7 +31,6 @@ export default async function ProductDetail({ params: { slug } }) {
                 </h2>
                 <ProductShare />
               </div>
-
               <div className="flex items-center gap-4 mt-3">
                 <div className="text-secondary bg-secondary flex items-center gap-1 px-4 text-xs font-semibold border text-center py-1 rounded-full">
                   <Star size={18} color="#5c5f6a" />
@@ -41,14 +40,14 @@ export default async function ProductDetail({ params: { slug } }) {
                   {product?.stockStatus}
                 </div>
               </div>
-
               <div className="mt-8">
                 <h3 className="text-primary font-semibold text-[18px]">
                   ${product?.price}
                 </h3>
               </div>
 
-              <AddToCart />
+              {/* Cart */}
+              <CartOptions product={product} />
             </div>
           </div>
         </div>

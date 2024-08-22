@@ -1,6 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   decrementCartItem,
   incrementCartItem,
@@ -8,6 +9,7 @@ import {
 } from "@/redux/cart/cart.slice";
 import { Minus, Plus, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function CartItems() {
@@ -35,7 +37,23 @@ export default function CartItems() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 h-full">
+      {cart.length === 0 && (
+        <div className="flex items-center justify-center flex-col h-full gap-2">
+          <Image
+            src={`/assets/icons/empty-state.png`}
+            width={64}
+            height={64}
+            alt="Empty Order"
+          />
+          <p className="text-lg text-secondary">
+            Your cart is waiting to be filled. Start shopping now!
+          </p>
+          <Link href="/products" className={cn(buttonVariants({}))}>
+            Continue Shopping
+          </Link>
+        </div>
+      )}
       {cart.map((item) => (
         <div
           key={item?.id}

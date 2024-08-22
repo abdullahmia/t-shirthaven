@@ -12,6 +12,27 @@ import { Category } from "../category/category.model";
 import { productCache } from "./cache";
 import { Product } from "./product.model";
 
+// export const getProducts = reactCache(() =>
+//   cache(
+//     async () => {
+//       await connectDB();
+//       return transformObject(
+//         await Product.find({})
+//           .populate({
+//             path: "category",
+//             model: Category,
+//           })
+//           .sort({ createdAt: -1 })
+//           .lean()
+//       );
+//     },
+//     [productCache.tag.byCount()],
+//     {
+//       tags: [productCache.tag.byCount()],
+//     }
+//   )()
+// );
+
 export const getProducts = reactCache(() =>
   cache(
     async () => {

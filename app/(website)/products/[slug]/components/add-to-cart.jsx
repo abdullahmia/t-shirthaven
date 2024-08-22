@@ -2,15 +2,21 @@
 
 import { Button } from "@/components/ui/button";
 import { SIZE_OPTIONS } from "@/constants";
+import { addToCart } from "@/redux/cart/cart.slice";
 import { Heart, Minus, Plus } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
-export default function AddToCart() {
+export default function AddToCart({ product }) {
   // Local state
   const [cartInfo, setCartInfo] = useState({
-    size: "",
+    size: "l",
     quantity: 1,
   });
+
+  // Hooks
+  const dispatch = useDispatch();
 
   /**
    * HANDLERS
@@ -25,6 +31,20 @@ export default function AddToCart() {
     } else if (type === "increment") {
       setCartInfo({ ...cartInfo, quantity: cartInfo.quantity + 1 });
     }
+  };
+
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        image: product.images[0].url,
+        size: cartInfo.size,
+        quantity: cartInfo.quantity,
+      })
+    );
+    toast.success("Product added to cart");
   };
 
   return (
@@ -76,7 +96,9 @@ export default function AddToCart() {
       </div>
 
       <div className="flex items-center gap-4">
-        <Button className="px-24">Add to Cart</Button>
+        <Button className="px-24" onClick={handleAddToCart}>
+          Add to Cart
+        </Button>
         <Button variant="outline">
           <Heart size={20} color="#5c5f6a" />
         </Button>

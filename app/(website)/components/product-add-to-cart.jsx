@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { addToCart } from "@/redux/cart/cart.slice";
 import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 export default function ProductAddToCart({ product }) {
   // Hooks
@@ -20,6 +21,7 @@ export default function ProductAddToCart({ product }) {
         quantity: 1,
       })
     );
+    toast.success("Product added to cart");
   };
 
   return (

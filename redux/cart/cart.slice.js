@@ -2,20 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const loadStateFromLocalStorage = () => {
   try {
-    const serializedState = localStorage.getItem("cart");
-    const parsedState = serializedState ? JSON.parse(serializedState) : null;
+    if (typeof window !== "undefined") {
+      const serializedState = localStorage.getItem("cart");
+      const parsedState = serializedState ? JSON.parse(serializedState) : null;
 
-    if (parsedState && typeof parsedState === "object" && parsedState.cart) {
-      // Recalculate cartTotal based on the cart items
-      const cartTotal = parsedState.cart.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-      );
+      if (parsedState && typeof parsedState === "object" && parsedState.cart) {
+        // Recalculate cartTotal based on the cart items
+        const cartTotal = parsedState.cart.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
 
-      return {
-        cart: parsedState.cart,
-        cartTotal: cartTotal,
-      };
+        return {
+          cart: parsedState.cart,
+          cartTotal: cartTotal,
+        };
+      }
     }
 
     return { cart: [], cartTotal: 0 };
@@ -27,8 +29,10 @@ const loadStateFromLocalStorage = () => {
 
 const saveStateToLocalStorage = (state) => {
   try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem("cart", serializedState);
+    if (typeof window !== "undefined") {
+      const serializedState = JSON.stringify(state);
+      localStorage.setItem("cart", serializedState);
+    }
   } catch (e) {
     console.error("Could not save state to localStorage", e);
   }
