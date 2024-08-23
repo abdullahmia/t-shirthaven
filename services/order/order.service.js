@@ -6,6 +6,8 @@ import { cache as reactCache } from "react";
 import "server-only";
 import { z } from "zod";
 import { orderSchema } from "../../types/order";
+import { Product } from "../product/product.model";
+import { User } from "../user";
 import { orderCache } from "./cache";
 import { Order } from "./order.model";
 
@@ -48,6 +50,39 @@ export const getOrderBySessionId = reactCache((id) =>
     [orderCache.tag.bySession(id)],
     {
       tags: [orderCache.tag.bySession(id)],
+    }
+  )()
+);
+
+export const getOrdersUserId = reactCache((id) =>
+  cache(
+    async () => {
+      validateInputs([id, z.string()]);
+
+      try {
+        await connectDB();
+
+        const orders = await Order.find({
+          user: id,
+        })
+          .populate({
+            path: "user",
+            model: User,
+          })
+          .populate({
+            path: "products",
+            model: Product,
+          })
+          .lean();
+
+        return transformObject(orders);
+      } catch (error) {
+        throw new Error("Failed to get order");
+      }
+    },
+    [orderCache.tag.byUser(id)],
+    {
+      tags: [orderCache.tag.byUser(id)],
     }
   )()
 );

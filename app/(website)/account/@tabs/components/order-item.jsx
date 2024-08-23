@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { formatDate } from "@/utils/date";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function OrderItem() {
+export default function OrderItem({ order }) {
   return (
     <div className="w-full flex items-center justify-between lg:gap-0 gap-4">
       <div className="w-full flex items-center lg:gap-9 gap-2">
@@ -16,22 +16,24 @@ export default function OrderItem() {
           />
         </div>
         <div>
-          <h2 className="text-sm font-medium text-primary">
+          <Link
+            href={`/account/${34}`}
+            className="text-sm font-medium text-primary hover:underline"
+          >
             Raw Black T-Shirt Lineup
-          </h2>
-          <p className="text-xs text-secondary">Ordered on: 27 July 2023</p>
-          <p className="text-sm text-primary">$27.00</p>
+          </Link>
+          <p className="text-xs text-secondary">
+            Ordered on: {formatDate(order?.createdAt)}
+          </p>
+          <p className="text-sm text-primary">${order?.totalAmount}</p>
         </div>
       </div>
       <div className="w-full flex items-center lg:justify-end justify-start gap-4">
         <div className="lg:mr-4">
-          <p className="text-sm font-medium underline text-primary">
-            Processing
+          <p className="text-sm font-medium underline text-primary capitalize">
+            {order?.orderStatus}
           </p>
         </div>
-        <Button variant="ghost" className="text-xs bg-secondary">
-          <X />
-        </Button>
       </div>
     </div>
   );
