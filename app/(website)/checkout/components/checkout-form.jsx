@@ -9,7 +9,6 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { toast } from "sonner";
 
 export default function CheckoutForm({ currentUser }) {
   // Local State
@@ -49,20 +48,38 @@ export default function CheckoutForm({ currentUser }) {
    */
   const onSubmit = async (data) => {
     setLoading(true);
+
     try {
+      const shippingAddress = {
+        name: data.name,
+        state: data.state,
+        country: data.country,
+        city: data.city,
+        zip: data.zip,
+        street: data.street,
+      };
+      const cartItems = cart;
+      const userId = currentUser?.id;
+
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cart),
+        body: JSON.stringify({
+          shippingAddress,
+          cartItems,
+          userId,
+        }),
       });
       const responseData = await response.json();
       if (response?.ok) {
         const stripe = await stripePromise;
+
         stripe.redirectToCheckout({
           sessionId: responseData?.sessionId,
         });
+
         setLoading(false);
       }
     } catch (error) {
@@ -240,7 +257,7 @@ export default function CheckoutForm({ currentUser }) {
               type="submit"
               className="w-full"
               loading={loading}
-              disabled={loading}
+              disabled={loading || !cart.length}
             >
               Place Order
             </Button>
