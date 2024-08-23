@@ -10,15 +10,17 @@ export const registerAction = async (data) => {
   await createUser(data);
 };
 
-export const credentialLoginAction = async (data) => {
+export const credentialLoginAction = async (data, redirect) => {
   try {
     const response = await signIn("credentials", {
       email: data.email,
       password: data.password,
       redirect: false,
+      callbackUrl: redirect || "/account",
     });
     return response;
   } catch (error) {
+    console.log(error);
     throw new Error(error);
   }
 };

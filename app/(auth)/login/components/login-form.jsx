@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -27,6 +27,7 @@ export default function LoginForm() {
 
   // hooks
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   // form
   const {
@@ -48,7 +49,7 @@ export default function LoginForm() {
     setLoading(true);
     setError(null);
     try {
-      const response = await credentialLoginAction(data);
+      await credentialLoginAction(data, searchParams.get("redirect"));
       router.push("/account");
       toast.success("Login successful");
       setError(null);

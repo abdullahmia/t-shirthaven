@@ -1,11 +1,13 @@
 "use client";
 
-import { ShoppingCart } from "lucide-react";
 import { SessionProvider } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ClientWrapper from "./client-wrapper";
 import HeaderOptions from "./header-option";
 import Logo from "./logo";
+import ReduxWrapper from "./redux-wrapper";
+import ShoppingCart from "./shopping-cart";
 import { Input } from "./ui/input";
 
 export default function Header() {
@@ -66,9 +68,11 @@ export default function Header() {
 
             {/* Cart & Account */}
             <div className="flex items-center gap-6">
-              <Link href="/cart">
-                <ShoppingCart size={20} />
-              </Link>
+              <ClientWrapper>
+                <ReduxWrapper>
+                  <ShoppingCart />
+                </ReduxWrapper>
+              </ClientWrapper>
 
               <SessionProvider>
                 <HeaderOptions />

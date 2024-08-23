@@ -1,4 +1,9 @@
+import ClientWrapper from "@/components/client-wrapper";
 import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
+import ReduxWrapper from "@/components/redux-wrapper";
+import { auth } from "@/lib/auth";
+import { getUserByEmail } from "@/services/user";
+import { redirect } from "next/navigation";
 import CheckoutForm from "./components/checkout-form";
 
 export const metadata = {
@@ -6,11 +11,24 @@ export const metadata = {
   description: "Checkout page",
 };
 
-export default function Checkout() {
+export default async function Checkout() {
+  const session = await auth();
+
+  if (!session) {
+    return redirect("/login?redirect=/checkout");
+  }
+
+  const user = await getUserByEmail(session.user.email);
+
   return (
     <div>
       <GenerateBreadcrumb title={"Checkut"} />
-      <CheckoutForm />
+
+      <ClientWrapper>
+        <ReduxWrapper>
+          <CheckoutForm currentUser={user} />
+        </ReduxWrapper>
+      </ClientWrapper>
     </div>
   );
 }

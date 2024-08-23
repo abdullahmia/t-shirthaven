@@ -3,6 +3,7 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
+  clearCart,
   decrementCartItem,
   incrementCartItem,
   removeFromCart,
@@ -34,6 +35,10 @@ export default function CartItems() {
 
   const removeItem = (id) => {
     dispatch(removeFromCart(id));
+  };
+
+  const clearCartHandler = () => {
+    dispatch(clearCart());
   };
 
   return (
@@ -105,6 +110,18 @@ export default function CartItems() {
           </div>
         </div>
       ))}
+
+      {cart?.length > 0 && (
+        <div className="flex justify-end">
+          <Button
+            onClick={clearCartHandler}
+            variant="link"
+            className="underline pr-0"
+          >
+            Clear cart
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

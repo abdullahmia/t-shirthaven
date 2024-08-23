@@ -10,7 +10,6 @@ export default function CartTotal() {
    * SELECTOR
    */
   const { cart, cartTotal } = useSelector((state) => state.cart);
-  console.log("Cart --> ", cartTotal);
 
   return (
     <div className="w-full border rounded-md p-5">
