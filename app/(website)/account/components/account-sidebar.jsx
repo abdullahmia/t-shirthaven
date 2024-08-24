@@ -6,17 +6,17 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 const menus = [
-  { title: "Dashboard", url: "/account", icon: "/assets/icons/cart.png" },
+  { title: "Dashboard", url: "/account", icon: "/assets/icons/dashboard.png" },
   { title: "Orders", url: "/account/orders", icon: "/assets/icons/cart.png" },
-  {
-    title: "Wishlist",
-    url: "/account/wishlist",
-    icon: "/assets/icons/wishlist.png",
-  },
   {
     title: "Address",
     url: "/account/address",
     icon: "/assets/icons/truck.png",
+  },
+  {
+    title: "Account Details",
+    url: "/account/account-details",
+    icon: "/assets/icons/user.png",
   },
   {
     title: "Password",
@@ -24,9 +24,9 @@ const menus = [
     icon: "/assets/icons/key.png",
   },
   {
-    title: "Account Details",
-    url: "/account/account-details",
-    icon: "/assets/icons/user.png",
+    title: "Wishlist",
+    url: "/account/wishlist",
+    icon: "/assets/icons/wishlist.png",
   },
 ];
 

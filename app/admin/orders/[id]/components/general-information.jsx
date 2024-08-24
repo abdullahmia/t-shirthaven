@@ -1,18 +1,47 @@
+"use client";
+
+import { SelectInput } from "@/components/select-input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { ORDER_STATUS_OPTIONS } from "@/constants";
-import { Mail, MapPinned, Smartphone, User } from "lucide-react";
+import { Mail, MapPinned, User } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { updateOrderAction } from "../../action";
 
-export default function GeneralInformation() {
+export default function GeneralInformation({ order, shippingAddress }) {
+  // Local state
+  const [loading, setLoading] = useState(false);
+
+  /**
+   * FORM ELEMENTS
+   */
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      orderStatus: order?.orderStatus,
+    },
+  });
+
+  /**
+   * FORM HANDLERS
+   */
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await updateOrderAction(order?.id, data);
+      toast.success("Order updated successfully");
+      setLoading(false);
+    } catch (error) {
+      toast.error("Something went wrong. Please try again");
+    }
+  };
+
   return (
     <div className="bg-white p-5 border border-[#e9e9eb8d] rounded">
       <div className="flex items-center gap-2 pb-5 border-b">
@@ -20,7 +49,7 @@ export default function GeneralInformation() {
         <h2>General Information</h2>
       </div>
 
-      <form className="space-y-[18px]">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-[18px]">
         <div className="space-y-2 mt-6">
           <Label className="flex items-center gap-2 text-sm text-secondary">
             <Image
@@ -31,27 +60,14 @@ export default function GeneralInformation() {
             />
             Order Status
           </Label>
-          <Select>
-            <SelectTrigger className="w-full text-sm text-secondary focus:ring-0 focus:ring-offset-0  overflow-hidden">
-              <SelectValue
-                placeholder={ORDER_STATUS_OPTIONS[0].label}
-                className="txt-sm text-secondary"
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {ORDER_STATUS_OPTIONS.map((option) => (
-                  <SelectItem
-                    className="cursor-pointer hover:bg-gray-900"
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+
+          <Controller
+            name="orderStatus"
+            control={control}
+            render={({ field }) => (
+              <SelectInput options={ORDER_STATUS_OPTIONS} {...field} />
+            )}
+          />
         </div>
 
         <div className="flex items-start gap-2">
@@ -59,7 +75,7 @@ export default function GeneralInformation() {
           <div className="flex-1">
             <p className="text-sm text-secondary font-normal">Custoner</p>
             <h2 className="text-primary text-sm font-semibold">
-              Jay Hadgunson
+              {shippingAddress?.name}
             </h2>
           </div>
         </div>
@@ -69,19 +85,20 @@ export default function GeneralInformation() {
           <div className="flex-1">
             <p className="text-sm text-secondary font-normal">Email</p>
             <h2 className="text-primary text-sm font-semibold">
-              jay.hadgunson@mail.com
+              {order?.user?.email}
             </h2>
           </div>
         </div>
 
-        <div className="flex items-start gap-2">
+        {/* TODO: Implement phone features */}
+        {/* <div className="flex items-start gap-2">
           <Smartphone size={20} color="#5c5f6a" />
 
           <div className="flex-1">
             <p className="text-sm text-secondary font-normal">Phone Number</p>
             <h2 className="text-primary text-sm font-semibold">050 414 8788</h2>
           </div>
-        </div>
+        </div> */}
 
         <div className="flex items-start gap-2">
           <MapPinned size={20} color="#5c5f6a" />
@@ -90,12 +107,19 @@ export default function GeneralInformation() {
               Shipping address
             </p>
             <h2 className="text-primary text-sm font-semibold">
-              dhaka bangladesh
+              {shippingAddress?.street}
             </h2>
           </div>
         </div>
 
-        <Button className="w-full">Update order</Button>
+        <Button
+          type="submit"
+          className="w-full"
+          loading={loading}
+          disabled={loading}
+        >
+          Update order
+        </Button>
       </form>
     </div>
   );

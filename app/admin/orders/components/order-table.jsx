@@ -7,46 +7,27 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { formatDate } from "@/utils/date";
 import { Ellipsis, FilePenLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const data = [
-  {
-    image: "/assets/images/product.png",
-    name: "Raw Black T-Shirt Lineup",
-    date: "20 Mar, 2023",
-    total: "$20",
-    status: "Pending",
-  },
-  {
-    image: "/assets/images/product.png",
-    name: "Raw Black T-Shirt Lineup",
-    date: "20 Mar, 2023",
-    total: "$20",
-    status: "Pending",
-  },
-  {
-    image: "/assets/images/product.png",
-    name: "Raw Black T-Shirt Lineup",
-    date: "20 Mar, 2023",
-    total: "$20",
-    status: "Pending",
-  },
-];
+export default function OrderTable({ orders }) {
+  console.log("Orders", orders[0]?.createdAt);
 
-export default function OrderTable() {
   const columns = [
     {
-      accessorKey: "name",
+      accessorKey: "id",
       header: () => {
         return <div className="text-start lg:w-[250px]">Name</div>;
       },
       cell: ({ row }) => {
-        const image = row?.original?.image;
+        const id = row?.original?.id;
+        const image = row?.original?.products[0]?.product?.images[0].url;
+        const user = row?.original?.user;
         return (
           <Link
-            href={`/admin/orders/${1}`}
+            href={`/admin/orders/${id}`}
             className="capitalize flex items-center gap-2 group"
           >
             <Image
@@ -55,43 +36,63 @@ export default function OrderTable() {
               height={48}
               alt={row.getValue("name")}
             />
-            <span className="group-hover:underline transition">
-              {row.getValue("name")}
-            </span>
+            <div>
+              <span className="group-hover:underline font-semibold transition">
+                #{row.getValue("id")}
+              </span>
+              <p className="text-xs text-secondary">{user?.name}</p>
+              <p className="text-xs text-secondary lowercase">{user?.email}</p>
+            </div>
           </Link>
         );
       },
     },
     {
-      accessorKey: "date",
+      accessorKey: "createdAt",
       header: () => {
         return <div className="text-start">Date</div>;
       },
       cell: ({ row }) => {
-        return (
-          <div className="text-start capitalize">{row?.getValue("date")}</div>
-        );
+        const date = formatDate(row?.original?.createdAt);
+        return <div className="text-start capitalize">{date}</div>;
       },
     },
     {
-      accessorKey: "total",
+      accessorKey: "totalAmount",
       header: () => {
         return <div className="text-start">Total</div>;
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start capitalize">{row?.getValue("total")}</div>
+          <div className="text-start capitalize">
+            ${row?.getValue("totalAmount")}
+          </div>
         );
       },
     },
     {
-      accessorKey: "status",
+      accessorKey: "orderStatus",
       header: () => {
         return <div className="text-start">Status</div>;
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start capitalize">{row?.getValue("status")}</div>
+          <div className="text-start capitalize">
+            {row?.getValue("orderStatus")}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "paymentStatus",
+      header: () => {
+        return <div className="text-start">Status</div>;
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="text-start capitalize">
+            {row?.getValue("paymentStatus")}
+          </div>
         );
       },
     },
@@ -126,7 +127,7 @@ export default function OrderTable() {
     <div>
       <DataTable
         tableTitle="Orders"
-        data={data}
+        data={orders}
         columns={columns}
         searchBy={"name"}
         enableShowPerPage={false}

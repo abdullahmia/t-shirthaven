@@ -1,29 +1,17 @@
 "use client";
 
 import { DataTable } from "@/components/data-table";
+import { Button } from "@/components/ui/button";
+import { formatDate } from "@/utils/date";
 import { Calendar } from "lucide-react";
 import Image from "next/image";
 
-// Example data
-
-const data = [
-  {
-    image: "/assets/images/product.png",
-    name: "Raw Black T-Shirt Lineup",
-    sku: 10,
-    quantity: 10,
-    price: 100,
-  },
-  {
-    image: "/assets/images/product.png",
-    name: "Raw Black T-Shirt Lineup",
-    sku: 10,
-    quantity: 10,
-    price: 100,
-  },
-];
-
-export default function OrderItems() {
+export default function OrderItems({
+  products,
+  orderStatus,
+  date,
+  totalAmount,
+}) {
   const columns = [
     {
       accessorKey: "name",
@@ -31,16 +19,16 @@ export default function OrderItems() {
         return <div className="text-start lg:w-[250px]">Name</div>;
       },
       cell: ({ row }) => {
-        const image = row?.original?.image;
+        const { product } = row?.original;
         return (
           <div className="capitalize flex items-center gap-2">
             <Image
-              src={image}
+              src={product?.images[0]?.url}
               width={48}
               height={48}
-              alt={row.getValue("name")}
+              alt={product?.title}
             />
-            <span>{row.getValue("name")}</span>
+            <span>{product?.title?.slice(0, 25)}</span>
           </div>
         );
       },
@@ -51,9 +39,8 @@ export default function OrderItems() {
         return <div className="text-start">SKU</div>;
       },
       cell: ({ row }) => {
-        return (
-          <div className="text-start capitalize">{row?.getValue("sku")}</div>
-        );
+        const { product } = row?.original;
+        return <div className="text-start capitalize">{product?.sku}</div>;
       },
     },
     {
@@ -63,7 +50,7 @@ export default function OrderItems() {
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start capitalize">
+          <div className="text-center capitalize">
             {row?.getValue("quantity")}
           </div>
         );
@@ -87,7 +74,9 @@ export default function OrderItems() {
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start capitalize">${row?.getValue("price")}</div>
+          <div className="text-start capitalize">
+            ${row?.getValue("price") * row?.getValue("quantity")}
+          </div>
         );
       },
     },
@@ -101,25 +90,28 @@ export default function OrderItems() {
             Product
           </span>
           <span className="text-sm font-semibold text-[#1A9882] bg-[#E9FAF7] px-3 py-1 rounded-full">
-            2 Products
+            {products?.length} Products
           </span>
         </h2>
 
         <div className="flex items-center gap-4">
+          <div>
+            <Button variant="link">Generate Invoice</Button>
+          </div>
           <div className="flex items-center gap-2 text-sm text-secondary">
             <Calendar color="#5c5f6a" size={17} />
-            13 January 2023, 14:00
+            {formatDate(date)}
           </div>
 
           {/* This div will replace with <Badge /> component */}
-          <div className="text-sm text-[#2BB2FE] bg-[#EAF8FF] px-3 py-1 inline-block rounded-full">
-            Shiped
+          <div className="text-sm text-[#2BB2FE] bg-[#EAF8FF] px-3 py-1 inline-block rounded-full capitalize">
+            {orderStatus || ""}
           </div>
         </div>
       </div>
       <DataTable
         tableTitle="Categories"
-        data={data}
+        data={products}
         columns={columns}
         searchBy={"name"}
         enableShowPerPage={false}
@@ -132,13 +124,13 @@ export default function OrderItems() {
         {/* Sub Total */}
         <div className="flex items-center justify-between py-4 mt-4">
           <span className="text-md text-primary">Sub Total</span>
-          <span className="text-md text-primary">$3432</span>
+          <span className="text-md text-primary">${totalAmount}</span>
         </div>
 
         {/* Grand Total */}
         <div className="flex items-center justify-between py-4">
           <span className="text-xl text-primary">Grand Total</span>
-          <span className="text-xl text-primary">$3432</span>
+          <span className="text-xl text-primary">${totalAmount}</span>
         </div>
       </div>
     </div>

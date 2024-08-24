@@ -27,6 +27,40 @@ export const createOrder = async (orderData) => {
   }
 };
 
+export const getOrders = reactCache(() =>
+  cache(
+    async () => {
+      try {
+        await connectDB();
+
+        const orders = await Order.find({})
+          .populate({
+            path: "user",
+            model: User,
+          })
+          .populate({
+            path: "products",
+            model: Product,
+          })
+          .populate({
+            path: "products.product",
+            model: Product,
+          })
+          .sort({ createdAt: -1 })
+          .lean();
+
+        return replaceMeta(orders);
+      } catch (error) {
+        throw new Error("Failed to get order");
+      }
+    },
+    [orderCache.tag.byCount()],
+    {
+      tags: [orderCache.tag.byCount()],
+    }
+  )()
+);
+
 export const getOrderBySessionId = reactCache((id) =>
   cache(
     async () => {

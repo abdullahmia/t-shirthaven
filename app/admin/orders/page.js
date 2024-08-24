@@ -1,3 +1,4 @@
+import { getOrders } from "@/services/order/order.service";
 import OrderTable from "./components/order-table";
 
 export const metadata = {
@@ -6,10 +7,12 @@ export const metadata = {
     "Manage orders. View, update, delete orders. Manage order status",
 };
 
-export default function OrderManagement() {
+export default async function OrderManagement() {
+  const orders = await getOrders();
+
   return (
     <div>
-      <OrderTable />
+      <OrderTable orders={orders} />
     </div>
   );
 }
