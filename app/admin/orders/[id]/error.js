@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Error(props) {
+export default function Error() {
   return (
     <div className="">
       <div className="flex flex-col justify-center items-center">
@@ -22,7 +22,7 @@ export default function Error(props) {
             temporarily unavailable
           </p>
           <Link
-            href="/account/orders"
+            href="/admin/orders"
             className={`underline ${cn(
               buttonVariants({
                 variant: "Link",
