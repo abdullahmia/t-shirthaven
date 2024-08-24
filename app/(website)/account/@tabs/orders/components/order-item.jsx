@@ -8,7 +8,7 @@ export default function OrderItem({ order }) {
       <div className="w-full flex items-center lg:gap-9 gap-2">
         <div>
           <Image
-            src={"/assets/images/product.png"}
+            src={order?.products[0]?.product?.images[0]?.url}
             width={100}
             height={100}
             alt="prouct"
@@ -17,13 +17,16 @@ export default function OrderItem({ order }) {
         </div>
         <div>
           <Link
-            href={`/account/${34}`}
+            href={`/account/orders/${order?.id}`}
             className="text-sm font-medium text-primary hover:underline"
           >
-            Raw Black T-Shirt Lineup
+            # {order?.id}
           </Link>
           <p className="text-xs text-secondary">
             Ordered on: {formatDate(order?.createdAt)}
+          </p>
+          <p className="text-xs text-secondary">
+            Product quantity: {order?.products?.length}
           </p>
           <p className="text-sm text-primary">${order?.totalAmount}</p>
         </div>

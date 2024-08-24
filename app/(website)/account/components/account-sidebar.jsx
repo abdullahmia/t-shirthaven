@@ -6,7 +6,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 const menus = [
-  { title: "Orders", url: "/account", icon: "/assets/icons/cart.png" },
+  { title: "Dashboard", url: "/account", icon: "/assets/icons/cart.png" },
+  { title: "Orders", url: "/account/orders", icon: "/assets/icons/cart.png" },
   {
     title: "Wishlist",
     url: "/account/wishlist",

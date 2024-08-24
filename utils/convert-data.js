@@ -53,3 +53,45 @@ export function transformObject(obj) {
     return obj;
   }
 }
+
+export function replaceMeta(data) {
+  // Check if data is an array
+  if (Array.isArray(data)) {
+    data.forEach((item) => {
+      if (typeof item === "object" && item !== null) {
+        replaceMeta(item);
+      }
+    });
+  }
+  // Check if data is an object
+  else if (typeof data === "object" && data !== null) {
+    Object.keys(data).forEach((key) => {
+      // Delete 'password' and '__v'
+      if (key === "password" || key === "__v") {
+        delete data[key];
+      }
+
+      // Replace '_id' with 'id'
+      if (key === "_id") {
+        data.id = data[key];
+        delete data._id;
+      }
+
+      // If the property is an array, check each item
+      if (Array.isArray(data[key])) {
+        data[key].forEach((item) => {
+          if (typeof item === "object" && item !== null) {
+            replaceMeta(item);
+          }
+        });
+      }
+
+      // If the property is an object, recursively apply replaceMeta
+      if (typeof data[key] === "object" && data[key] !== null) {
+        replaceMeta(data[key]);
+      }
+    });
+  }
+
+  return data;
+}

@@ -37,6 +37,7 @@ export const getCategoryById = reactCache((id) =>
         if (!category) {
           throw new Error("Category not found");
         }
+        return transformObject(category);
       } catch (error) {
         throw new Error("Failed to get category");
       }

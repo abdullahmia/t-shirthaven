@@ -1,7 +1,5 @@
 import { auth } from "@/lib/auth";
-import { getOrdersUserId } from "@/services/order/order.service";
-import EmptyOrder from "./components/empty-order";
-import OrderItem from "./components/order-item";
+import { getUserById } from "@/services/user";
 
 export const metadata = {
   title: "My Account",
@@ -10,20 +8,18 @@ export const metadata = {
 
 export default async function Account() {
   const session = await auth();
-
-  const orders = await getOrdersUserId(session.user.id);
+  const user = await getUserById(session.user.id);
 
   return (
     <div>
-      <h2 className="text-primary text-[16px] font-semibold">Orders</h2>
-
-      <div className="mt-12 space-y-3 lg:w-4/5 w-full h-[450px] overflow-y-auto no-scrollbar">
-        {orders?.length > 0 ? (
-          orders?.map((order) => <OrderItem key={order?.id} order={order} />)
-        ) : (
-          <EmptyOrder />
-        )}
-      </div>
+      <h2 className="text-secondary">
+        Hello <b>{user?.name}</b>
+      </h2>
+      <p className="text-sm text-secondary pt-2">
+        From your account dashboard you can view your recent orders, manage your
+        shipping and billing addresses, and edit your password and account
+        details.
+      </p>
     </div>
   );
 }

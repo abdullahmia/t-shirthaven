@@ -1,6 +1,6 @@
 import connectDB from "@/lib/db";
 import { cache } from "@/utils/cache";
-import { transformObject } from "@/utils/convert-data";
+import { replaceMeta, transformObject } from "@/utils/convert-data";
 import { validateInputs } from "@/utils/validate";
 import { cache as reactCache } from "react";
 import "server-only";
@@ -73,9 +73,57 @@ export const getOrdersUserId = reactCache((id) =>
             path: "products",
             model: Product,
           })
+          .populate({
+            path: "products.product",
+            model: Product,
+          })
+          .sort({ createdAt: -1 })
           .lean();
 
-        return transformObject(orders);
+        return replaceMeta(orders);
+      } catch (error) {
+        throw new Error("Failed to get order");
+      }
+    },
+    [orderCache.tag.byUser(id)],
+    {
+      tags: [orderCache.tag.byUser(id)],
+    }
+  )()
+);
+
+export const getOrderById = reactCache((id) =>
+  cache(
+    async () => {
+      validateInputs([id, z.string()]);
+
+      try {
+        await connectDB();
+
+        const order = await Order.findOne({
+          _id: id,
+        })
+          .populate({
+            path: "user",
+            model: User,
+          })
+          .populate({
+            path: "products",
+            model: Product,
+          })
+          .populate({
+            path: "products.product",
+            model: Product,
+          })
+          .lean();
+
+        if (!order) {
+          throw new Error("Order not found");
+        } else {
+          return replaceMeta(order);
+        }
+
+        // return replaceMeta(order);
       } catch (error) {
         throw new Error("Failed to get order");
       }

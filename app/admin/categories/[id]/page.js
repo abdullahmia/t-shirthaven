@@ -8,6 +8,7 @@ export const metadata = {
 
 export default async function EditProduct({ params: { id } }) {
   const category = await getCategoryById(id);
+  console.log("Category: ", category);
   return (
     <div>
       <CategoryForm isEdit={true} category={category} />
