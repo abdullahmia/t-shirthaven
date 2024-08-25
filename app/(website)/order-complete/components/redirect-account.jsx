@@ -17,11 +17,11 @@ export function RedirectAccount() {
    */
   useEffect(() => {
     dispatch(clearCart());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Link
-      href="/account"
+      href="/account/orders"
       className={`${cn(buttonVariants({}))} text-sm font-light px-8 rounded-sm`}
     >
       Go to my account

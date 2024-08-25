@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { getUserById } from "@/services/user";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "My Account",
@@ -8,6 +9,11 @@ export const metadata = {
 
 export default async function Account() {
   const session = await auth();
+
+  if (!session) {
+    return redirect("/login");
+  }
+
   const user = await getUserById(session.user.id);
 
   return (

@@ -29,18 +29,19 @@ export default async function OrderSuccessfull({
   const paymentSession = await stripe.checkout.sessions.retrieve(session_id);
 
   // Update the order status & payment status
-  if (paymentSession.payment_status === "paid") {
+  if (
+    paymentSession.payment_status === "paid" &&
+    order?.orderStatus === "pending"
+  ) {
     confirmOrderAction(order.id, {
       paymentStatus: paymentSession.payment_status,
       orderStatus: "processing",
     });
 
-    if (order?.orderStatus === "pending") {
-      /**
-       * Send order confirmation email
-       */
-      await sendOrderConfirmationEmailAction(order);
-    }
+    /**
+     * Send order confirmation email
+     */
+    await sendOrderConfirmationEmailAction(order);
   }
 
   return (
