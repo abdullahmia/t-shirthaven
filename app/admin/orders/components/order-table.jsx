@@ -13,8 +13,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function OrderTable({ orders }) {
-  console.log("Orders", orders[0]?.createdAt);
-
   const columns = [
     {
       accessorKey: "id",

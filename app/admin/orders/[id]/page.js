@@ -20,6 +20,7 @@ export default async function OrderDetail({ params: { id } }) {
             date={order?.createdAt}
             orderStatus={order?.orderStatus}
             totalAmount={order?.totalAmount}
+            invoice={order}
           />
         </div>
         <div className="lg:col-span-4 col-span-12 space-y-[18px]">

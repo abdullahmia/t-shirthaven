@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import GenerateInvoice from "@/components/generate-invoice";
 import { getOrderById } from "@/services/order/order.service";
 import { formatDate } from "@/utils/date";
 
@@ -17,7 +17,7 @@ export default async function OrderDetail({ params: { id } }) {
 
       <div className="flex items-center justify-between mt-5">
         <h4 className="text-2xl font-bold">Order details</h4>
-        <Button variant="link">Download Invoice</Button>
+        <GenerateInvoice order={order} />
       </div>
 
       {/* Products  */}

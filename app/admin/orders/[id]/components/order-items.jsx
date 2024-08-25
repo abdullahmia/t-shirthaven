@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table";
-import { Button } from "@/components/ui/button";
+import GenerateInvoice from "@/components/generate-invoice";
 import { formatDate } from "@/utils/date";
 import { Calendar } from "lucide-react";
 import Image from "next/image";
@@ -11,6 +11,7 @@ export default function OrderItems({
   orderStatus,
   date,
   totalAmount,
+  invoice,
 }) {
   const columns = [
     {
@@ -96,7 +97,7 @@ export default function OrderItems({
 
         <div className="flex items-center gap-4">
           <div>
-            <Button variant="link">Generate Invoice</Button>
+            <GenerateInvoice order={invoice} />
           </div>
           <div className="flex items-center gap-2 text-sm text-secondary">
             <Calendar color="#5c5f6a" size={17} />
