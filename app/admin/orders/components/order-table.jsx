@@ -28,12 +28,7 @@ export default function OrderTable({ orders }) {
             href={`/admin/orders/${id}`}
             className="capitalize flex items-center gap-2 group"
           >
-            <Image
-              src={image}
-              width={48}
-              height={48}
-              alt={row.getValue("name")}
-            />
+            <Image src={image} width={48} height={48} alt={id} />
             <div>
               <span className="group-hover:underline font-semibold transition">
                 #{row.getValue("id")}
@@ -71,11 +66,11 @@ export default function OrderTable({ orders }) {
     {
       accessorKey: "orderStatus",
       header: () => {
-        return <div className="text-start">Status</div>;
+        return <div className="text-center">Order Status</div>;
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start capitalize">
+          <div className="text-center capitalize">
             {row?.getValue("orderStatus")}
           </div>
         );
@@ -84,11 +79,11 @@ export default function OrderTable({ orders }) {
     {
       accessorKey: "paymentStatus",
       header: () => {
-        return <div className="text-start">Status</div>;
+        return <div className="text-center">Payment Status</div>;
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start capitalize">
+          <div className="text-center capitalize">
             {row?.getValue("paymentStatus")}
           </div>
         );

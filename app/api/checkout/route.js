@@ -61,6 +61,7 @@ export async function POST(req) {
       message: "Session created successfully",
     });
   } catch (error) {
+    console.error("Error creating session", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

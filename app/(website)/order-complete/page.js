@@ -5,7 +5,7 @@ import { stripe } from "@/lib/stripe";
 import { getOrderBySessionId } from "@/services/order/order.service";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { confirmOrderAction } from "./action";
+import { confirmOrderAction, sendOrderConfirmationEmailAction } from "./action";
 import { RedirectAccount } from "./components/redirect-account";
 
 export const metadata = {
@@ -34,6 +34,13 @@ export default async function OrderSuccessfull({
       paymentStatus: paymentSession.payment_status,
       orderStatus: "processing",
     });
+
+    if (order?.orderStatus === "pending") {
+      /**
+       * Send order confirmation email
+       */
+      await sendOrderConfirmationEmailAction(order);
+    }
   }
 
   return (

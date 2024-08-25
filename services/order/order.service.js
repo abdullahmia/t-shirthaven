@@ -1,6 +1,6 @@
 import connectDB from "@/lib/db";
 import { cache } from "@/utils/cache";
-import { replaceMeta, transformObject } from "@/utils/convert-data";
+import { replaceMeta } from "@/utils/convert-data";
 import { validateInputs } from "@/utils/validate";
 import { cache as reactCache } from "react";
 import "server-only";
@@ -71,12 +71,26 @@ export const getOrderBySessionId = reactCache((id) =>
 
         const order = await Order.findOne({
           "paymentDetails.sessionId": id,
-        }).lean();
+        })
+
+          .populate({
+            path: "user",
+            model: User,
+          })
+          .populate({
+            path: "products",
+            model: Product,
+          })
+          .populate({
+            path: "products.product",
+            model: Product,
+          })
+          .lean();
 
         if (!order) {
           throw new Error("Order not found");
         }
-        return transformObject(order);
+        return replaceMeta(order);
       } catch (error) {
         throw new Error("Failed to get order");
       }
