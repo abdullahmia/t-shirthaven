@@ -3,10 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { SIZE_OPTIONS } from "@/constants";
 import { addToCart } from "@/redux/cart/cart.slice";
-import { Heart, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
+import AddToWishlist from "./add-to-wishlist";
 
 export default function AddToCart({ product }) {
   // Local state
@@ -99,9 +100,8 @@ export default function AddToCart({ product }) {
         <Button className="px-24" onClick={handleAddToCart}>
           Add to Cart
         </Button>
-        <Button variant="outline">
-          <Heart size={20} color="#5c5f6a" />
-        </Button>
+        {/* WishList */}
+        <AddToWishlist product={product} />
       </div>
 
       <div>
