@@ -28,7 +28,12 @@ export default async function OrderDetail({ params: { id } }) {
             order={order}
             shippingAddress={order?.shippingAddress}
           />
-          <PaymentInfo payment={order?.paymentDetails} />
+          <PaymentInfo
+            payment={{
+              ...order?.paymentDetails,
+              paymentStatus: order?.paymentStatus,
+            }}
+          />
         </div>
       </div>
     </div>

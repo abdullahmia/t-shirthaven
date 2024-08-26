@@ -90,6 +90,19 @@ export default function OrderTable({ orders }) {
       },
     },
     {
+      accessorKey: "paymentMethod",
+      header: () => {
+        return <div className="text-center">Payment Method</div>;
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="text-center capitalize">
+            {row?.getValue("paymentMethod")}
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "action",
       header: () => {
         return <div className="text-start">Action</div>;

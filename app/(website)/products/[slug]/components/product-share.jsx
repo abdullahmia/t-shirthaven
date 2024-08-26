@@ -34,7 +34,7 @@ export default function ProductShare() {
         <div>
           <h2 className="text-primary text-[16px] font-semibold">Copy Link</h2>
           <div className="flex items-center gap-2 mt-2">
-            <Input value={window.location.href} disabled />
+            <Input value={window?.location.href} disabled />
             <Button onClick={handleCopyClipboard} variant="outline">
               <Copy size={20} color="#5c5f6a" />
             </Button>

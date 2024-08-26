@@ -1,3 +1,4 @@
+import ClientWrapper from "@/components/client-wrapper";
 import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getProductBySlug } from "@/services/product/service";
@@ -29,7 +30,9 @@ export default async function ProductDetail({ params: { slug } }) {
                 <h2 className="flex-1 text-2xl font-semibold text-primary">
                   {product?.title}
                 </h2>
-                <ProductShare />
+                <ClientWrapper>
+                  <ProductShare />
+                </ClientWrapper>
               </div>
               <div className="flex items-center gap-4 mt-3">
                 <div className="text-secondary bg-secondary flex items-center gap-1 px-4 text-xs font-semibold border text-center py-1 rounded-full">

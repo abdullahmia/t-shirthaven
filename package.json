@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -33,6 +34,7 @@
     "cloudinary-build-url": "^0.2.4",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.1.6",
+    "husky": "^9.1.5",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
