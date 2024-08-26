@@ -4,8 +4,11 @@ import InputError from "@/components/input-error";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { loadStripe } from "@stripe/stripe-js";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -13,6 +16,11 @@ import { useSelector } from "react-redux";
 export default function CheckoutForm({ currentUser }) {
   // Local State
   const [loading, setLoading] = useState(false);
+
+  /**
+   * Hooks
+   */
+  const router = useRouter();
 
   /**
    * STIPE LOAD
@@ -40,6 +48,7 @@ export default function CheckoutForm({ currentUser }) {
       state: currentUser?.address?.state,
       zip: currentUser?.address?.zip,
       country: currentUser?.address?.country,
+      paymentMethod: "stripe",
     },
   });
 
@@ -48,7 +57,6 @@ export default function CheckoutForm({ currentUser }) {
    */
   const onSubmit = async (data) => {
     setLoading(true);
-
     try {
       const shippingAddress = {
         name: data.name,
@@ -70,17 +78,23 @@ export default function CheckoutForm({ currentUser }) {
           shippingAddress,
           cartItems,
           userId,
+          paymentMethod: data.paymentMethod,
         }),
       });
       const responseData = await response.json();
       if (response?.ok) {
-        const stripe = await stripePromise;
+        // If payment method is cash on delivery
+        if (data.paymentMethod === "cash_on_delivery") {
+          router.push("/order-complete");
+        } else if (data.paymentMethod === "stripe") {
+          const stripe = await stripePromise;
 
-        stripe.redirectToCheckout({
-          sessionId: responseData?.sessionId,
-        });
+          stripe.redirectToCheckout({
+            sessionId: responseData?.sessionId,
+          });
 
-        setLoading(false);
+          setLoading(false);
+        }
       }
     } catch (error) {
       setLoading(false);
@@ -250,6 +264,61 @@ export default function CheckoutForm({ currentUser }) {
           <div className="text-sm text-primary flex justify-between">
             <span>Total: </span>
             <span className="capitalize font-semibold">$ {cartTotal}</span>
+          </div>
+
+          <div className="mt-6">
+            <Controller
+              name="paymentMethod"
+              control={control}
+              render={({ field }) => (
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue="stripe"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem
+                      value="cash_on_delivery"
+                      id="cash_on_delivery"
+                    />
+                    <Label
+                      htmlFor="cash_on_delivery"
+                      className="text-secondary"
+                    >
+                      Cash on Delivery
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="stripe" id="stripe" />
+                    <Label
+                      htmlFor="stripe"
+                      className="text-secondary flex items-center gap-2"
+                    >
+                      <span>Credit Card (Stripe)</span>
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src="/assets/images/visa.png"
+                          alt="visa"
+                          height={30}
+                          width={30}
+                        />
+                        <Image
+                          src="/assets/images/mastercard.png"
+                          alt="visa"
+                          height={25}
+                          width={25}
+                        />
+                        <Image
+                          src="/assets/images/amex.png"
+                          alt="visa"
+                          height={40}
+                          width={40}
+                        />
+                      </div>
+                    </Label>
+                  </div>
+                </RadioGroup>
+              )}
+            />
           </div>
 
           <div className="flex flex-col justify-center items-center gap-6 mt-6">

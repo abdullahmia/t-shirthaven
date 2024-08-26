@@ -54,6 +54,10 @@ export default async function OrderDetail({ params: { id } }) {
           <div className="w-full capitalize">{order?.paymentMethod}</div>
         </div>
         <div className="py-2 text-sm px-2 flex items-center justify-between border-t">
+          <div className="w-full uppercase">Payment status: </div>
+          <div className="w-full capitalize">{order?.paymentStatus}</div>
+        </div>
+        <div className="py-2 text-sm px-2 flex items-center justify-between border-t">
           <div className="w-full uppercase font-semibold">Total: </div>
           <div className="w-full font-semibold">${order?.totalAmount}</div>
         </div>

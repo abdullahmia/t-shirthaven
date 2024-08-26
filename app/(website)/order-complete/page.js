@@ -1,8 +1,12 @@
 import ClientWrapper from "@/components/client-wrapper";
 import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
 import ReduxWrapper from "@/components/redux-wrapper";
+import { auth } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
-import { getOrderBySessionId } from "@/services/order/order.service";
+import {
+  getOrderBySessionId,
+  getOrdersUserId,
+} from "@/services/order/order.service";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { confirmOrderAction, sendOrderConfirmationEmailAction } from "./action";
@@ -16,32 +20,60 @@ export const metadata = {
 export default async function OrderSuccessfull({
   searchParams: { session_id },
 }) {
+  const session = await auth();
+
+  // Redirect to login if user is not logged in
+  if (!session) {
+    return redirect("/login");
+  }
+
+  let order;
+
   if (!session_id) {
-    return redirect("/");
+    const orders = await getOrdersUserId(session.user.id);
+    order = orders[0];
+
+    if (order?.orderStatus === "pending") {
+      /**
+       * Update the order status to processing
+       */
+      await confirmOrderAction(order.id, {
+        orderStatus: "processing",
+      });
+
+      /**
+       * Send order confirmation email
+       */
+      await sendOrderConfirmationEmailAction(order);
+    }
   }
-  const order = await getOrderBySessionId(session_id);
 
-  if (!order) {
-    return redirect("/");
-  }
+  if (session_id) {
+    order = await getOrderBySessionId(session_id);
+    if (!order) {
+      return redirect("/");
+    }
 
-  // Payment session
-  const paymentSession = await stripe.checkout.sessions.retrieve(session_id);
+    // Payment session
+    const paymentSession = await stripe.checkout.sessions.retrieve(session_id);
 
-  // Update the order status & payment status
-  if (
-    paymentSession.payment_status === "paid" &&
-    order?.orderStatus === "pending"
-  ) {
-    confirmOrderAction(order.id, {
-      paymentStatus: paymentSession.payment_status,
-      orderStatus: "processing",
-    });
+    if (
+      paymentSession.payment_status === "paid" &&
+      order?.orderStatus === "pending"
+    ) {
+      /**
+       * Update the order status to processing
+       */
+      await confirmOrderAction(order.id, {
+        orderStatus: "processing",
+        paymentStatus: "paid",
+      });
 
-    /**
-     * Send order confirmation email
-     */
-    await sendOrderConfirmationEmailAction(order);
+      /**
+       * Send order confirmation email
+       */
+      await sendOrderConfirmationEmailAction(order);
+    }
   }
 
   return (

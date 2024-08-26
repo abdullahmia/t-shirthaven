@@ -40,7 +40,7 @@ const orderSchema = new Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ["card", "paypal", "stripe", "cash_on_delivery"],
+      enum: ["stripe", "cash_on_delivery"],
       default: "stripe",
     },
     paymentDetails: {

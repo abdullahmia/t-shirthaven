@@ -15,7 +15,7 @@ export const createOrder = async (orderData) => {
   validateInputs([orderData, orderSchema]);
 
   try {
-    await Order.create(orderData);
+    const order = await Order.create(orderData);
 
     orderCache.revalidate({
       userId: orderData.user,
@@ -187,11 +187,17 @@ export const updateOrder = async (id, data) => {
   validateInputs([id, z.string(), data, orderSchema.partial()]);
 
   try {
+    const order = await getOrderById(id);
+    if (!order) {
+      throw new Error("Order not found");
+    }
     await Order.findByIdAndUpdate(id, data);
 
     orderCache.revalidate({
       id: id,
       count: true,
+      sessionId: order.paymentDetails.sessionId,
+      userId: order.user.id,
     });
   } catch (error) {
     throw new Error("Failed to update order");

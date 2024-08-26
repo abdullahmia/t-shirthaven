@@ -20,7 +20,6 @@ export const credentialLoginAction = async (data, redirect) => {
     });
     return response;
   } catch (error) {
-    console.log(error);
     throw new Error(error);
   }
 };
