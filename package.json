@@ -9,7 +9,7 @@
     "lint": "next lint",
     "prettier:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
     "prettier:check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
-    "prepare": "husky"
+     "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
