@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table";
+import Chip from "@/components/ui/chip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -63,19 +64,7 @@ export default function OrderTable({ orders }) {
         );
       },
     },
-    {
-      accessorKey: "orderStatus",
-      header: () => {
-        return <div className="text-center">Order Status</div>;
-      },
-      cell: ({ row }) => {
-        return (
-          <div className="text-center capitalize">
-            {row?.getValue("orderStatus")}
-          </div>
-        );
-      },
-    },
+
     {
       accessorKey: "paymentStatus",
       header: () => {
@@ -98,6 +87,28 @@ export default function OrderTable({ orders }) {
         return (
           <div className="text-center capitalize">
             {row?.getValue("paymentMethod")}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "orderStatus",
+      header: () => {
+        return <div className="text-center">Order Status</div>;
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="text-center capitalize">
+            <Chip
+              label={row?.getValue("orderStatus")}
+              variant={
+                row?.getValue("orderStatus") === "completed"
+                  ? "success"
+                  : row?.getValue("orderStatus") === "processing"
+                  ? "warning"
+                  : "danger"
+              }
+            />
           </div>
         );
       },

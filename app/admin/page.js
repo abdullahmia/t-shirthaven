@@ -1,3 +1,5 @@
+import { getOrders } from "@/services/order/order.service";
+import { formatDate } from "@/utils/date";
 import { BestSelling } from "./components/wizards/best-selling";
 import RecentOrders from "./components/wizards/recent-orders";
 import { TotalCustomers } from "./components/wizards/total-customers";
@@ -9,7 +11,19 @@ export const metadata = {
   description: "Admin page",
 };
 
-export default function Admin() {
+export default async function Admin() {
+  /**
+   * Recent orders
+   */
+  const orders = await getOrders();
+  const recentOrders = orders.slice(0, 6)?.map((order) => {
+    return {
+      name: order?.products[0]?.product?.title,
+      date: formatDate(order?.createdAt),
+      total: order?.totalAmount,
+      status: order?.orderStatus,
+    };
+  });
   return (
     <div className="space-y-10">
       <div className="grid lg:grid-cols-3 grid-cols-1 gap-10">
@@ -20,7 +34,7 @@ export default function Admin() {
 
       <div className="grid lg:grid-cols-3 gap-10">
         <BestSelling />
-        <RecentOrders />
+        <RecentOrders orders={recentOrders} />
       </div>
     </div>
   );

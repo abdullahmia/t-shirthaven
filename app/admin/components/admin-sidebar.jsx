@@ -16,7 +16,11 @@ const menus = [
     url: "/admin/products",
     icon: "/assets/icons/products.png",
   },
-
+  {
+    title: "Reviews",
+    url: "/admin/reviews",
+    icon: "/assets/icons/products.png",
+  },
   {
     title: "Orders",
     url: "/admin/orders",
@@ -25,6 +29,11 @@ const menus = [
   {
     title: "Customers",
     url: "/admin/customers",
+    icon: "/assets/icons/users.png",
+  },
+  {
+    title: "Newsletters",
+    url: "/admin/newsletters",
     icon: "/assets/icons/users.png",
   },
   {
@@ -40,7 +49,7 @@ export default function AdminSidebar() {
 
   return (
     <div className="w-[260px] bg-white border-r border-[#E9E9EB] p-5 sticky top-0 h-screen overflow-y-auto">
-      <div>
+      <Link href="/admin">
         <Image
           src="/admin-logo.png"
           width={116}
@@ -48,7 +57,7 @@ export default function AdminSidebar() {
           alt="admin logo"
           className="m-auto"
         />
-      </div>
+      </Link>
 
       {/* Menus */}
       <ul className="list-none space-y-2 mt-14">

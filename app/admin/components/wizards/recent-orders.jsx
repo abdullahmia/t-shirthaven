@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table";
+import Chip from "@/components/ui/chip";
 import Link from "next/link";
 
 const data = [
@@ -42,7 +43,7 @@ const data = [
   },
 ];
 
-export default function RecentOrders() {
+export default function RecentOrders({ orders }) {
   const columns = [
     {
       accessorKey: "name",
@@ -67,11 +68,11 @@ export default function RecentOrders() {
     {
       accessorKey: "total",
       header: () => {
-        return <div className="text-start">Address</div>;
+        return <div className="text-start">Price</div>;
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start capitalize">{row?.getValue("total")}</div>
+          <div className="text-center capitalize">{row?.getValue("total")}</div>
         );
       },
     },
@@ -81,7 +82,18 @@ export default function RecentOrders() {
         return <div className="text-start">Status</div>;
       },
       cell: ({ row }) => (
-        <div className="text-start capitalize">{row?.getValue("status")}</div>
+        <div className="text-start capitalize">
+          <Chip
+            label={row?.getValue("status")}
+            variant={
+              row?.getValue("status") === "completed"
+                ? "success"
+                : row?.getValue("status") === "processing"
+                ? "warning"
+                : "danger"
+            }
+          />
+        </div>
       ),
     },
   ];
@@ -103,7 +115,7 @@ export default function RecentOrders() {
       <div>
         <DataTable
           tableTitle="POPs list"
-          data={data}
+          data={orders}
           columns={columns}
           searchBy={"name"}
           showItemPerPage={20}
