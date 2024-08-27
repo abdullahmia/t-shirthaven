@@ -154,7 +154,7 @@ export default async function Page() {
       </div>
 
       <div className="container responsive py-24">
-        <Tabs defaultValue="featured">
+        <Tabs defaultValue="latest">
           <div className="flex items-center justify-center">
             <TabsList className="bg-white space-x-5">
               <TabsTrigger
