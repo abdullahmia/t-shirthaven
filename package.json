@@ -9,7 +9,7 @@
     "lint": "next lint",
     "prettier:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
     "prettier:check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
-     "prepare": "husky install"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -60,7 +60,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "husky": "^9.1.5",
     "lint-staged": "^15.2.9",

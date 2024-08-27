@@ -1,19 +1,19 @@
-import { buttonVariants } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+import { buttonVariants } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 import {
   getBestSellingProducts,
   getShopProducts,
-} from "@/services/product/service";
-import { MoveRight, ShieldCheck, TicketCheck, Truck } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import Newsletter from "./components/newsletter";
-import ProductCard from "./components/product-card";
+} from '@/services/product/service';
+import { MoveRight, ShieldCheck, TicketCheck, Truck } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import Newsletter from './components/newsletter';
+import ProductCard from './components/product-card';
 
 export const metadata = {
-  title: "Fashio Ecommerce",
-  description: "Fashio Ecommerce",
+  title: 'Fashio Ecommerce',
+  description: 'Fashio Ecommerce',
 };
 
 export default async function Page() {
@@ -23,32 +23,32 @@ export default async function Page() {
   return (
     <div className="">
       {/* Banner */}
-      <div className="bg-[#F6F6F6] lg:pt-20 lg:py-0 py-20">
-        <div className="container flex items-center justify-between responsive">
-          <div className="lg:space-y-5 space-y-2">
-            <h2 className="text-4xl text-primary font-semibold">
+      <div className="bg-[#F6F6F6] py-20 lg:py-0 lg:pt-20">
+        <div className="responsive container flex items-center justify-between">
+          <div className="space-y-2 lg:space-y-5">
+            <h2 className="text-4xl font-semibold text-primary">
               Fresh Arrivals Online
             </h2>
             <p className="text-sm text-secondary">
               Shop the latest arrivals from your favorite brands.
             </p>
-            <div className="lg:pt-7 pt-3">
+            <div className="pt-3 lg:pt-7">
               <Link
                 href="/products"
                 className={cn(
                   buttonVariants({
-                    variant: "default",
-                    padding: "lg",
-                  })
+                    variant: 'default',
+                    padding: 'lg',
+                  }),
                 )}
               >
-                View Collection <MoveRight size={20} />
+                View Collections <MoveRight size={20} />
               </Link>
             </div>
           </div>
-          <div className="lg:block hidden">
+          <div className="hidden lg:block">
             <Image
-              src={"/assets/images/banner.png"}
+              src={'/assets/images/banner.png'}
               width={344}
               height={344}
               alt="Banner"
@@ -57,9 +57,9 @@ export default async function Page() {
         </div>
       </div>
 
-      <div className="container grid lg:grid-cols-3 grid-cols-1 lg:gap-28 lg:py-24 lg:pt-24 pt-20 responsive">
-        <div className="text-start space-y-6">
-          <div className="bg-secondary w-16 h-16 flex items-center justify-center rounded-full">
+      <div className="responsive container grid grid-cols-1 pt-20 lg:grid-cols-3 lg:gap-28 lg:py-24 lg:pt-24">
+        <div className="space-y-6 text-start">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
             <Truck size={30} color="#5c5f6a" />
           </div>
           <div className="space-y-2">
@@ -73,8 +73,8 @@ export default async function Page() {
           </div>
         </div>
 
-        <div className="text-start space-y-6">
-          <div className="bg-secondary w-16 h-16 flex items-center justify-center rounded-full">
+        <div className="space-y-6 text-start">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
             <TicketCheck size={30} color="#5c5f6a" />
           </div>
           <div className="space-y-2">
@@ -88,8 +88,8 @@ export default async function Page() {
           </div>
         </div>
 
-        <div className="text-start space-y-6">
-          <div className="bg-secondary w-16 h-16 flex items-center justify-center rounded-full">
+        <div className="space-y-6 text-start">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
             <ShieldCheck size={30} color="#5c5f6a" />
           </div>
           <div className="space-y-2">
@@ -103,14 +103,14 @@ export default async function Page() {
         </div>
       </div>
 
-      <div className="container responsive py-20">
+      <div className="responsive container py-20">
         <div className="text-center">
           <p className="text-[12px] text-secondary">Shop Now</p>
-          <h2 className="text-primary text-2xl font-semibold">Best Selling</h2>
+          <h2 className="text-2xl font-semibold text-primary">Best Selling</h2>
         </div>
 
         {/* Products */}
-        <div className="grid lg:grid-cols-4 md:grid-col-2 grid-cols-1 gap-8 mt-20">
+        <div className="md:grid-col-2 mt-20 grid grid-cols-1 gap-8 lg:grid-cols-4">
           {bestSellings?.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -118,9 +118,9 @@ export default async function Page() {
       </div>
 
       <div className="bg-gradient-light py-7">
-        <div className="container grid lg:grid-cols-2 grid-cols-1 items-center gap-5 flex-wrap responsive">
+        <div className="responsive container grid grid-cols-1 flex-wrap items-center gap-5 lg:grid-cols-2">
           <div>
-            <h2 className="text-2xl text-primary font-semibold">
+            <h2 className="text-2xl font-semibold text-primary">
               Browse Our Fashion Paradise!
             </h2>
             <p className="text-sm text-secondary">
@@ -132,18 +132,18 @@ export default async function Page() {
                 href="/products"
                 className={cn(
                   buttonVariants({
-                    variant: "default",
-                    padding: "lg",
-                  })
+                    variant: 'default',
+                    padding: 'lg',
+                  }),
                 )}
               >
                 Start Browsing <MoveRight size={20} />
               </Link>
             </div>
           </div>
-          <div className="flex items-center justify-center  w-full">
+          <div className="flex w-full items-center justify-center">
             <Image
-              src={"/assets/images/category.png"}
+              src={'/assets/images/category.png'}
               width={225}
               height={325}
               alt="category"
@@ -153,19 +153,19 @@ export default async function Page() {
         </div>
       </div>
 
-      <div className="container responsive py-24">
+      <div className="responsive container py-24">
         <Tabs defaultValue="latest">
           <div className="flex items-center justify-center">
-            <TabsList className="bg-white space-x-5">
+            <TabsList className="space-x-5 bg-white">
               <TabsTrigger
                 value="featured"
-                className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:border rounded-full text-sm"
+                className="rounded-full text-sm data-[state=active]:border data-[state=active]:bg-white data-[state=active]:text-primary"
               >
                 Featured
               </TabsTrigger>
               <TabsTrigger
                 value="latest"
-                className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:border rounded-full text-sm"
+                className="rounded-full text-sm data-[state=active]:border data-[state=active]:bg-white data-[state=active]:text-primary"
               >
                 Latest
               </TabsTrigger>
@@ -173,7 +173,7 @@ export default async function Page() {
           </div>
 
           <TabsContent value="featured" className="mt-10">
-            <div className="grid lg:grid-cols-4 md:grid-col-2 grid-cols-1 gap-8">
+            <div className="md:grid-col-2 grid grid-cols-1 gap-8 lg:grid-cols-4">
               <ProductCard />
               <ProductCard />
               <ProductCard />
@@ -181,7 +181,7 @@ export default async function Page() {
             </div>
           </TabsContent>
           <TabsContent value="latest" className="mt-10">
-            <div className="grid lg:grid-cols-4 md:grid-col-2 grid-cols-1 gap-8">
+            <div className="md:grid-col-2 grid grid-cols-1 gap-8 lg:grid-cols-4">
               {latestProducts?.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

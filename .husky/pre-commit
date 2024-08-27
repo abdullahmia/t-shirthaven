@@ -2,3 +2,14 @@
 
 # Run lint-staged
 npx lint-staged
+
+# Run the build command and check if it succeeds
+npm run build
+
+# Check if the build command was successful
+if [ $? -ne 0 ]; then
+  echo "Build failed. Aborting commit."
+  exit 1
+fi
+
+# If the build succeeds, the script will continue and allow the commit
