@@ -1,6 +1,7 @@
 {
     "*/**/*.{js,jsx,ts,tsx}": [
-        "prettier --write"
+        "npm run prettier:check",
+        "npm run prettier:fix"
     ],
     "*/**/*.{json,css,md}": [
         "prettier --write"
