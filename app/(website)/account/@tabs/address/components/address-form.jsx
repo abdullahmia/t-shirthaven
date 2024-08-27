@@ -14,7 +14,7 @@ const ZAddress = z.object({
   street: z.string({ message: "Street is required" }),
   city: z.string({ message: "City is required" }),
   state: z.string({ message: "State is required" }),
-  zip: z.string({ message: "Zip is required" }),
+  zip: z.number({ message: "Zip is required" }),
   country: z.string({ message: "Country is required" }),
 });
 
