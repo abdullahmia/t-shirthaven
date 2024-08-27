@@ -17,7 +17,11 @@ const SORT_OPTIONS = [
   { label: "High to Low", value: "desc" },
 ];
 
-export default function ProductSort({ products, categories }) {
+export default function ProductSort({
+  products,
+  categories,
+  totalProductCount,
+}) {
   // Hooks
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -45,7 +49,7 @@ export default function ProductSort({ products, categories }) {
     <div className="pb-5 flex items-center justify-between">
       <div className="flex items-center">
         <p className="text-sm text-secondary">
-          Showing {products?.length} of {products?.length} results.
+          Showing {products?.length} of {totalProductCount} results.
         </p>
 
         {searchParams.get("category") ||

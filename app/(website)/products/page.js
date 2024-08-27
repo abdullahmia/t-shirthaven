@@ -20,6 +20,7 @@ export default async function ProductPage({
     products: allProducts,
     totalPages,
     page,
+    total,
   } = await getShopProducts(activePage || 1, 12);
 
   // apply filters with category, size & sort.
@@ -57,7 +58,11 @@ export default async function ProductPage({
           <ProductFilters categories={categories} />
         </div>
         <div className="lg:col-span-9 col-span-12">
-          <ProductSort products={products} categories={categories} />
+          <ProductSort
+            products={products}
+            categories={categories}
+            totalProductCount={total}
+          />
 
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7">
             {products?.map((product) => (

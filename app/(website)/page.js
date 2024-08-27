@@ -1,6 +1,10 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import {
+  getBestSellingProducts,
+  getShopProducts,
+} from "@/services/product/service";
 import { MoveRight, ShieldCheck, TicketCheck, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +16,10 @@ export const metadata = {
   description: "Fashio Ecommerce",
 };
 
-export default function Page() {
+export default async function Page() {
+  const bestSellings = await getBestSellingProducts();
+  const { products: latestProducts } = await getShopProducts(1, 4);
+
   return (
     <div className="">
       {/* Banner */}
@@ -104,10 +111,9 @@ export default function Page() {
 
         {/* Products */}
         <div className="grid lg:grid-cols-4 md:grid-col-2 grid-cols-1 gap-8 mt-20">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {bestSellings?.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       </div>
 
@@ -176,10 +182,9 @@ export default function Page() {
           </TabsContent>
           <TabsContent value="latest" className="mt-10">
             <div className="grid lg:grid-cols-4 md:grid-col-2 grid-cols-1 gap-8">
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
+              {latestProducts?.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
             </div>
           </TabsContent>
         </Tabs>

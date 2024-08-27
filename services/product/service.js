@@ -9,6 +9,7 @@ import { validateInputs } from "@/utils/validate";
 import { cache as reactCache } from "react";
 import "server-only";
 import { Category } from "../category/category.model";
+import { Order } from "../order/order.model";
 import { productCache } from "./cache";
 import { Product } from "./product.model";
 
@@ -219,3 +220,54 @@ export const updateProduct = async (id, data) => {
     throw new Error(error?.message);
   }
 };
+
+export async function getBestSellingProducts(limit = 4) {
+  try {
+    const bestSellingProducts = await Order.aggregate([
+      { $unwind: "$products" },
+      {
+        $group: {
+          _id: "$products.product",
+          totalQuantity: { $sum: "$products.quantity" },
+        },
+      },
+      { $sort: { totalQuantity: -1 } },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      { $unwind: "$productDetails" },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "productDetails.category",
+          foreignField: "_id",
+          as: "productDetails.categoryDetails",
+        },
+      },
+      { $unwind: "$productDetails.categoryDetails" },
+      {
+        $project: {
+          _id: 0,
+          productDetails: 1,
+          totalQuantity: 1,
+        },
+      },
+    ]);
+
+    bestSellingProducts.map((item) => {
+      item.productDetails.category = item.productDetails.categoryDetails;
+      delete item.productDetails.categoryDetails;
+      return item;
+    });
+
+    return replaceMeta(bestSellingProducts.map((item) => item.productDetails));
+  } catch (error) {
+    return [];
+  }
+}

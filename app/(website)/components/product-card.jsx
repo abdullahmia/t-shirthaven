@@ -22,7 +22,7 @@ export default function ProductCard({ product }) {
       <div className="mt-5 space-y-2">
         <Link href={`/products/${product?.slug}`}>
           <p className="text-secondary text-xs">{product?.category?.name}</p>
-          <h2 className="text-primary text-md group-hover:underline">
+          <h2 className="text-primary text-md group-hover:underline h-12">
             {product?.title?.slice(0, 31)}
             {product?.title?.length > 31 && "..."}
           </h2>
