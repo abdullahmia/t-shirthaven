@@ -2,7 +2,6 @@ import { CreditCard, Hash } from "lucide-react";
 import Image from "next/image";
 
 export default function PaymentInfo({ payment }) {
-  console.log("Payment --> ", payment);
   return (
     <div className="bg-white p-5 border border-[#e9e9eb8d] rounded">
       <div className="flex items-center gap-2 pb-5 border-b">
