@@ -3,7 +3,7 @@ import connectDB from "@/lib/db";
 import { ZId, ZSlug } from "@/types/common";
 import { ZCreateProduct, ZUpdateProduct } from "@/types/product";
 import { cache } from "@/utils/cache";
-import { transformObject } from "@/utils/convert-data";
+import { replaceMeta, transformObject } from "@/utils/convert-data";
 import { extractPublicId } from "@/utils/file";
 import { validateInputs } from "@/utils/validate";
 import { cache as reactCache } from "react";
@@ -53,6 +53,32 @@ export const getProducts = reactCache(() =>
     }
   )()
 );
+
+export const getShopProducts = async (page, limit = 10) => {
+  try {
+    await connectDB();
+    const products = await Product.find({})
+      .populate({
+        path: "category",
+        model: Category,
+      })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const data = {
+      products: products,
+      total: await Product.countDocuments(),
+      page: page,
+      limit: limit,
+      totalPages: Math.ceil((await Product.countDocuments()) / limit),
+    };
+    return replaceMeta(data);
+  } catch (error) {
+    throw new Error("Failed to get products");
+  }
+};
 
 export const getProductById = reactCache((id) =>
   cache(

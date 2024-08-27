@@ -1,6 +1,6 @@
 import { GenerateBreadcrumb } from "@/components/generate-breadcrumb";
 import { getCategories } from "@/services/category/service";
-import { getProducts } from "@/services/product/service";
+import { getShopProducts } from "@/services/product/service";
 import ProductCard from "../components/product-card";
 import ProductFilters from "./components/product-filters";
 import ProductPagination from "./components/product-pagination";
@@ -12,16 +12,21 @@ export const metadata = {
 };
 
 export default async function ProductPage({
-  searchParams: { category, size, sort },
+  searchParams: { category, size, sort, page: activePage },
 }) {
-  const allProducts = await getProducts();
+  // const allProducts = await getProducts();
   const categories = await getCategories();
+  const {
+    products: allProducts,
+    totalPages,
+    page,
+  } = await getShopProducts(activePage || 1, 12);
 
   // apply filters with category, size & sort.
   const products = allProducts
     ?.filter((product) => {
       if (category) {
-        return product.category?.id === category;
+        return String(product.category?.id) === category;
       }
       return true;
     })
@@ -61,7 +66,7 @@ export default async function ProductPage({
           </div>
 
           {/* Pagination */}
-          <ProductPagination />
+          <ProductPagination pages={totalPages} currentPage={page} />
         </div>
       </div>
     </div>
