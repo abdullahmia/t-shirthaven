@@ -57,6 +57,8 @@ export default async function ProductPage({
           {/* Filters */}
           <ProductFilters categories={categories} />
         </div>
+
+        {/* Products Container */}
         <div className="lg:col-span-9 col-span-12">
           <ProductSort
             products={products}
@@ -64,6 +66,7 @@ export default async function ProductPage({
             totalProductCount={total}
           />
 
+          {/* Products */}
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7">
             {products?.map((product) => (
               <ProductCard key={product?.id} product={product} />

@@ -38,7 +38,7 @@ export default function AddToWishlist({ product }) {
       onClick={addToWishlistHandler}
       variant="outline"
       loading={loading}
-      disabled={loading}
+      disabled={loading || !session}
     >
       <Heart size={20} color="#5c5f6a" />
     </Button>
