@@ -72,7 +72,9 @@ export default function RecentOrders({ orders }) {
       },
       cell: ({ row }) => {
         return (
-          <div className="text-center capitalize">{row?.getValue("total")}</div>
+          <div className="text-center capitalize">
+            ${row?.getValue("total")}
+          </div>
         );
       },
     },
