@@ -2,6 +2,6 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "react/no-unescaped-entities": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }]
+    "react/jsx-filename-extension": [2, { "extensions": [".jsx", ".tsx"] }]
   }
 }

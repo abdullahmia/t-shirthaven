@@ -4,7 +4,7 @@
 npx lint-staged
 
 # Run the link command to link the package
-npm run link
+npm run lint
 
 # Run the build command and check if it succeeds
 npm run build

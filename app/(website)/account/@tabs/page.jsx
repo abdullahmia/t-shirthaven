@@ -1,0 +1,31 @@
+import { auth } from '@/lib/auth';
+import { getUserById } from '@/services/user';
+import { redirect } from 'next/navigation';
+
+export const metadata = {
+  title: 'My Account',
+  description: 'Account page',
+};
+
+export default async function Account() {
+  const session = await auth();
+
+  if (!session) {
+    return redirect('/login');
+  }
+
+  const user = await getUserById(session.user.id);
+
+  return (
+    <div>
+      <h2 className="text-secondary">
+        Hello <b>{user?.name}</b>
+      </h2>
+      <p className="pt-2 text-sm text-secondary">
+        From your account dashboard you can view your recent orders, manage your
+        shipping and billing addresses, and edit your password and account
+        details.
+      </p>
+    </div>
+  );
+}

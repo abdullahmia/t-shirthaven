@@ -1,45 +1,45 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const menus = [
-  { title: "Dashboard", url: "/admin", icon: "/assets/icons/dashboard.png" },
+  { title: 'Dashboard', url: '/admin', icon: '/assets/icons/dashboard.png' },
   {
-    title: "Categories",
-    url: "/admin/categories",
-    icon: "/assets/icons/package.png",
+    title: 'Categories',
+    url: '/admin/categories',
+    icon: '/assets/icons/package.png',
   },
   {
-    title: "Products",
-    url: "/admin/products",
-    icon: "/assets/icons/products.png",
+    title: 'Products',
+    url: '/admin/products',
+    icon: '/assets/icons/products.png',
   },
   {
-    title: "Reviews",
-    url: "/admin/reviews",
-    icon: "/assets/icons/products.png",
+    title: 'Reviews',
+    url: '/admin/reviews',
+    icon: '/assets/icons/reviews.png',
   },
   {
-    title: "Orders",
-    url: "/admin/orders",
-    icon: "/assets/icons/orders.png",
+    title: 'Orders',
+    url: '/admin/orders',
+    icon: '/assets/icons/orders.png',
   },
   {
-    title: "Customers",
-    url: "/admin/customers",
-    icon: "/assets/icons/users.png",
+    title: 'Customers',
+    url: '/admin/customers',
+    icon: '/assets/icons/users.png',
   },
   {
-    title: "Newsletters",
-    url: "/admin/newsletters",
-    icon: "/assets/icons/users.png",
+    title: 'Newsletters',
+    url: '/admin/newsletters',
+    icon: '/assets/icons/newsletter.png',
   },
   {
-    title: "Settings",
-    url: "/admin/settings",
-    icon: "/assets/icons/settings.png",
+    title: 'Settings',
+    url: '/admin/settings',
+    icon: '/assets/icons/settings.png',
   },
 ];
 
@@ -48,7 +48,7 @@ export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-[260px] bg-white border-r border-[#E9E9EB] p-5 sticky top-0 h-screen overflow-y-auto">
+    <div className="sticky top-0 h-screen w-[260px] overflow-y-auto border-r border-[#E9E9EB] bg-white p-5">
       <Link href="/admin">
         <Image
           src="/admin-logo.png"
@@ -60,15 +60,15 @@ export default function AdminSidebar() {
       </Link>
 
       {/* Menus */}
-      <ul className="list-none space-y-2 mt-14">
+      <ul className="mt-14 list-none space-y-2">
         {menus?.map((menu) => (
           <li key={menu.title}>
             <Link
               href={menu.url}
-              className={`flex items-center gap-3 text-sm text-[#5C5F6A] font-medium hover:text-primary py-3 px-6 rounded ${
+              className={`flex items-center gap-3 rounded px-6 py-3 text-sm font-medium text-[#5C5F6A] hover:text-primary ${
                 pathname === menu.url
-                  ? "bg-[#F7F8FA] text-primary"
-                  : "hover:bg-[#F7F8FA]"
+                  ? 'bg-[#F7F8FA] text-primary'
+                  : 'hover:bg-[#F7F8FA]'
               }`}
             >
               <Image src={menu.icon} width={20} height={20} alt="icon" />
